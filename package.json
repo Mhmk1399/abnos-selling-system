@@ -9,7 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.9",
+    "bcryptjs": "^3.0.2",
     "framer-motion": "^12.4.7",
+    "jsonwebtoken": "^9.0.2",
     "moment-jalaali": "^0.10.4",
     "mongoose": "^8.10.1",
     "next": "15.1.7",
