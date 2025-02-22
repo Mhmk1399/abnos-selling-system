@@ -9,42 +9,29 @@ import {
   BsTelephone,
   BsTelephoneForward,
 } from "react-icons/bs";
-import { FiSettings } from "react-icons/fi";
 import { HiMenuAlt3 } from "react-icons/hi";
-import { AiOutlineAim } from "react-icons/ai";
-import DefaultDashboard from "./default-saler";
+import { AiOutlineAim, AiOutlineGift } from "react-icons/ai";
+import DefaultSupervisor from "./default-supervisor";
 
-const SalerForm = () => {
+const SupervisorForm = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeComponent, setActiveComponent] = useState("");
 
   const menuItems = [
     { id: "dashboard", icon: <MdDashboard size={23} />, title: "داشبورد" },
-    {
-      id: "products",
-      icon: <FaUserFriends size={23} />,
-      title: "لیست مشتریان",
-    },
-    { id: "orders", icon: <BsCartCheck size={23} />, title: "سفارشات" },
+    { id: "products", icon: <FaUserFriends size={23} />, title: "لیست فروشندگان" },
+    { id: "orders", icon: <BsCartCheck size={23} />, title: "لیست مشتریان" },
     { id: "customers", icon: <BsListCheck size={23} />, title: "لسیت سفارشات" },
-    {
-      id: "transactions",
-      icon: <BsTelephone size={23} />,
-      title: "ثبت تماس ها",
-    },
-    {
-      id: "reports",
-      icon: <BsTelephoneForward size={23} />,
-      title: "لیست تماس ها",
-    },
-    { id: "suppliers", icon: <AiOutlineAim size={23} />, title: "لیست اهداف" },
-    { id: "settings", icon: <FiSettings size={23} />, title: "تنظیمات" },
+    { id: "transactions", icon: <BsTelephone size={23} />, title: "ثبت تماس ها" },
+    { id: "reports", icon: <BsTelephoneForward size={23} />, title: "لیست تماس ها" },
+    { id: "suppliers", icon: <AiOutlineAim size={23} />, title: "تعریف اهداف" },
+    { id: "settings", icon: <AiOutlineGift size={23} />, title: "تعریف پاداش" },
   ];
 
   const renderComponent = () => {
     switch (activeComponent) {
       case "dashboard":
-        return <DefaultDashboard />;
+        return <DefaultSupervisor />;
       case "sales":
         return <div className="p-4">Sales Content</div>;
       case "analytics":
@@ -54,12 +41,12 @@ const SalerForm = () => {
       case "settings":
         return <div className="p-4">Settings Content</div>;
       default:
-        return <DefaultDashboard />;
+        return <DefaultSupervisor />;
     }
   };
 
   return (
-    <div className="flex  " dir="rtl">
+    <div className="flex" dir="rtl">
       <motion.div
         animate={{ width: isOpen ? "240px" : "70px" }}
         className="min-h-screen bg-[#6FBDF5] z-[9999] text-white py-3 fixed"
@@ -114,4 +101,4 @@ const SalerForm = () => {
   );
 };
 
-export default SalerForm;
+export default SupervisorForm;
