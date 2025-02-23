@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const customerSchema = new mongoose.Schema({
+const customersSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -9,7 +9,7 @@ const customerSchema = new mongoose.Schema({
   phones: [
     {
       type: String,
-      required: true,
+      required: false,
     },
   ],
   personalInfo: [
@@ -27,13 +27,13 @@ const customerSchema = new mongoose.Schema({
   address: [
     {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
   ],
   city: {
     type: String,
-    required: true,
+    required: false,
     trim: true,
   },
   comments: [
@@ -45,16 +45,15 @@ const customerSchema = new mongoose.Schema({
   created: {
     type: Date,
     default: Date.now,
-    immutable: true,
   },
   workers: [
     {
-      name: { type: String, required: true },
+      name: { type: String, required: false },
       phone: {
         type: String,
-        required: true,
+        required: false,
       },
-      position: { type: String, required: true },
+      position: { type: String, required: false },
     },
   ],
   invoices: [
@@ -65,5 +64,5 @@ const customerSchema = new mongoose.Schema({
   ],
 });
 
-export default mongoose.models.Customer ||
-  mongoose.model("Customer", customerSchema);
+export default mongoose.models.Customers ||
+  mongoose.model("Customers", customersSchema);

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/lib/data";
-import Customer from "@/models/customer";
-import customer from "@/models/customer";
+import Customer from "@/models/customers";
+import customer from "@/models/customers";
 
 export async function POST(request: NextRequest) {
   await connect();
