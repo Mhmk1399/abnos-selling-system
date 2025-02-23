@@ -5,12 +5,8 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 export async function POST(request: Request) {
-  const {
-    name,
-    phoneNumber,
-    password,
-  } = await request.json();
-try {
+  const { name, phoneNumber, password } = await request.json();
+  try {
     await connect();
     if (!connect) {
       return NextResponse.json({ error: "connection failed" });
@@ -23,7 +19,7 @@ try {
       password: hashedPassword,
     });
     console.log(newUser);
-    
+
     await newUser.save();
 
     const token = jwt.sign(
@@ -31,7 +27,7 @@ try {
         id: newUser._id,
         pass: hashedPassword,
         role: newUser.role,
-        phoneNumber: newUser.phone,      
+        phoneNumber: newUser.phone,
       },
       process.env.JWT_SECRET!,
       { expiresIn: "1h" }
