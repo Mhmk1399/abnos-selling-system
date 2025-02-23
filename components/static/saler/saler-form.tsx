@@ -3,12 +3,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { MdDashboard } from "react-icons/md";
 import { FaUserFriends } from "react-icons/fa";
-import {
-  BsCartCheck,
-  BsListCheck,
-  BsTelephone,
-  BsTelephoneForward,
-} from "react-icons/bs";
+import { BsCartCheck, BsTelephone, BsTelephoneForward } from "react-icons/bs";
 import { FiSettings } from "react-icons/fi";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { AiOutlineAim } from "react-icons/ai";
@@ -61,7 +56,7 @@ const SalerForm = () => {
   return (
     <div className="flex" dir="rtl">
       <motion.div
-        animate={{ width: isOpen ? "240px" : "70px" }}
+        animate={{ width: isOpen ? "240px" : "50px" }}
         className={`min-h-screen bg-[#6FBDF5] ${
           isOpen ? "backdrop-blur-sm bg-opacity-80" : ""
         } z-[9999] text-white py-3 fixed `}
@@ -78,7 +73,7 @@ const SalerForm = () => {
           {menuItems.map((item) => (
             <motion.div
               key={item.id}
-              className={`flex items-center relative cursor-pointer hover:bg-white/10 py-3 px-4 group ${
+              className={`flex items-center relative cursor-pointer hover:bg-white/10 py-3 px-3 group ${
                 activeComponent === item.id ? "bg-white/10" : ""
               }`}
               onClick={() => setActiveComponent(item.id)}
