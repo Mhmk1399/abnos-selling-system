@@ -97,7 +97,7 @@ const DefinitionReward = () => {
         const data = await response.json();
         console.log(data);
 
-        setRewards([...rewards, data.reward[0]]);
+        setRewards([...rewards, data.reward]);
         setIsModalOpen(false);
       } catch (error) {
         console.error("Error fetching rewards:", error);
@@ -135,7 +135,7 @@ const DefinitionReward = () => {
             key={index}
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-shadow"
+            className="bg-gradient-to-r from-[#6FBDF5]/30 to-sky-50 border-r-2 border-[#6FBDF5] p-4 rounded-xl shadow-md hover:shadow-lg transition-shadow"
           >
             <h3 className="font-bold text-lg mb-2">{reward?.saler || ""}</h3>
             <div className="text-sm text-gray-600">
@@ -165,7 +165,7 @@ const DefinitionReward = () => {
               </h3>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-gray-500 hover:bg-gray-100 rounded-full p-2"
               >
                 <IoClose size={24} />
               </button>
