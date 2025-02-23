@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-
-
-
-
+import { ray } from "@/next-persian-fonts/ray";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,10 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-      >
-        {children}
-      </body>
+      <body className={ray.className}>{children}</body>
     </html>
   );
 }
