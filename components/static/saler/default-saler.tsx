@@ -269,11 +269,19 @@ const DefaultDashboard = () => {
                 <Tab.Panel>
                   <div className="max-h-64 overflow-y-auto space-y-2">
                     <input
+                      onChange={(e) =>
+                        setFormData({ ...formData, name: e.target.value })
+                      }
                       type="text"
                       placeholder="نام مشتری..."
                       className="w-full p-3 pr-12 border-2 text-black border-[#E8F4FE] rounded-xl focus:outline-none focus:border-[#6FBDF5] bg-[#F8FBFE]"
                     />
-                    <select className="w-full p-3 pr-12 border-2 text-black border-[#E8F4FE] rounded-xl focus:outline-none focus:border-[#6FBDF5] bg-[#F8FBFE]">
+                    <select
+                      onChange={(e) =>
+                        setFormData({ ...formData, type: e.target.value })
+                      }
+                      className="w-full p-3 pr-12 border-2 text-black border-[#E8F4FE] rounded-xl focus:outline-none focus:border-[#6FBDF5] bg-[#F8FBFE]"
+                    >
                       <option value="">انتخاب نوع مشتری</option>
                       <option value="individual">شخصی</option>
                       <option value="company">شرکت</option>

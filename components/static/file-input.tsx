@@ -17,7 +17,6 @@ const FileInput = () => {
     { name: "نظرات", icon: <FaComments /> },
   ];
 
-
   const PersonalInfo = () => (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
