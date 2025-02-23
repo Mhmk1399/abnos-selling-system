@@ -56,8 +56,6 @@ export const Costumers = () => {
       });
     }
   };
-  console.log(customers , "ggggggggggggggggggg");
-  
 
   const renderContent = () => {
     switch (activeTab) {
