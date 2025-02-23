@@ -13,8 +13,6 @@ export default function Home() {
   //   render?: (value: any) => JSX.Element;
   // }
 
- 
-
   // const columns: Column[] = [
   //   { key: "name", header: "نام", sortable: true },
   //   { key: "date", header: "تاریخ" },
