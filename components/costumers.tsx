@@ -29,14 +29,14 @@ export const Costumers = () => {
   }, []);
 
   const fetchCustomers = async () => {
-    const response = await fetch('/api/costumers');
+    const response = await fetch('/api/customer');
     const data = await response.json();
     setCustomers(data.costumers);
 };
 
 const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await fetch('/api/costumers', {
+    const response = await fetch('/api/customer', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
