@@ -19,11 +19,23 @@ const SupervisorForm = () => {
 
   const menuItems = [
     { id: "dashboard", icon: <MdDashboard size={23} />, title: "داشبورد" },
-    { id: "products", icon: <FaUserFriends size={23} />, title: "لیست فروشندگان" },
+    {
+      id: "products",
+      icon: <FaUserFriends size={23} />,
+      title: "لیست فروشندگان",
+    },
     { id: "orders", icon: <BsCartCheck size={23} />, title: "لیست مشتریان" },
     { id: "customers", icon: <BsListCheck size={23} />, title: "لسیت سفارشات" },
-    { id: "transactions", icon: <BsTelephone size={23} />, title: "ثبت تماس ها" },
-    { id: "reports", icon: <BsTelephoneForward size={23} />, title: "لیست تماس ها" },
+    {
+      id: "transactions",
+      icon: <BsTelephone size={23} />,
+      title: "ثبت تماس ها",
+    },
+    {
+      id: "reports",
+      icon: <BsTelephoneForward size={23} />,
+      title: "لیست تماس ها",
+    },
     { id: "suppliers", icon: <AiOutlineAim size={23} />, title: "تعریف اهداف" },
     { id: "settings", icon: <AiOutlineGift size={23} />, title: "تعریف پاداش" },
   ];
@@ -49,7 +61,9 @@ const SupervisorForm = () => {
     <div className="flex" dir="rtl">
       <motion.div
         animate={{ width: isOpen ? "240px" : "70px" }}
-        className="min-h-screen bg-[#6FBDF5] z-[9999] text-white py-3 fixed"
+        className={`min-h-screen bg-[#6FBDF5] ${
+          isOpen ? "backdrop-blur-sm bg-opacity-80" : ""
+        } z-[9999] text-white py-3 fixed `}
       >
         <motion.div
           animate={isOpen ? { x: 0 } : { x: -10 }}

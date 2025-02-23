@@ -206,7 +206,7 @@ const DefaultSupervisor: React.FC = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className=" min-h-screen"
+      className=" min-h-screen mx-16"
       dir="rtl"
     >
       {/* Header Section */}
@@ -241,7 +241,7 @@ const DefaultSupervisor: React.FC = () => {
           className="bg-white p-6 rounded-xl shadow-lg"
         >
           {/* Filters */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <Select
               isMulti
               options={salerOptions}
@@ -251,13 +251,13 @@ const DefaultSupervisor: React.FC = () => {
               onChange={(selected) => setSelectedSalers(selected)}
             />
 
-            <Select
+            {/* <Select
               options={dateRangeOptions}
               placeholder="بازه زمانی"
               className="text-right text-black"
               styles={customSelectStyles}
               onChange={(selected) => setSelectedDateRange(selected)}
-            />
+            /> */}
 
             <DatePicker
               calendar={persian}
