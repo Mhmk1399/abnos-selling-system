@@ -72,7 +72,7 @@ const DefaultDashboard = () => {
     // Fetch username
     const fetchUsername = async () => {
       try {
-        const response = await fetch("/api/user");
+        const response = await fetch("/api/auth/id");
         const data = await response.json();
         setUsername(data.username || "کاربر گرامی");
       } catch (error) {

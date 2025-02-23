@@ -13,6 +13,7 @@ import { FiSettings } from "react-icons/fi";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { AiOutlineAim } from "react-icons/ai";
 import DefaultDashboard from "./default-saler";
+import { Costumers } from "@/components/costumers";
 
 const SalerForm = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,7 +22,7 @@ const SalerForm = () => {
   const menuItems = [
     { id: "dashboard", icon: <MdDashboard size={23} />, title: "داشبورد" },
     {
-      id: "products",
+      id: "customers",
       icon: <FaUserFriends size={23} />,
       title: "لیست مشتریان",
     },
@@ -50,7 +51,7 @@ const SalerForm = () => {
       case "analytics":
         return <div className="p-4">Analytics Content</div>;
       case "customers":
-        return <div className="p-4">Customers Content</div>;
+        return <Costumers />;
       case "settings":
         return <div className="p-4">Settings Content</div>;
       default:

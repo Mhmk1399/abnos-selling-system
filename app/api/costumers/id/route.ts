@@ -1,6 +1,6 @@
 import connect from "@/lib/data";
 import { NextResponse,NextRequest } from "next/server";
-import Costumer from "@/models/customers";
+import Costumer from "@/models/costumers";
 export async function GET(request: Request) {
     await connect();
     if(!connect){
