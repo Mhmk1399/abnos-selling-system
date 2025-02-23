@@ -62,14 +62,14 @@ const SupervisorForm = () => {
   return (
     <div className="flex" dir="rtl">
       <motion.div
-        animate={{ width: isOpen ? "240px" : "50px" }}
+        animate={{ width: isOpen ? "170px" : "0px" }}
         className={`min-h-screen bg-[#6FBDF5] ${
           isOpen ? "backdrop-blur-sm bg-opacity-80" : ""
         } z-[9999] text-white py-3 fixed `}
       >
         <motion.div
           animate={isOpen ? { x: 0 } : { x: -10 }}
-          className="absolute cursor-pointer left-[-16px] top-3 w-8 h-8 bg-white rounded-full flex items-center justify-center"
+          className="absolute cursor-pointer left-[-20px] top-3 w-8 h-8 bg-white rounded-full flex items-center justify-center"
           onClick={() => setIsOpen(!isOpen)}
         >
           <HiMenuAlt3 size={20} color="#6FBDF5" />

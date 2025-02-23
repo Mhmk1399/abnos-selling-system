@@ -59,6 +59,8 @@ const DefaultSupervisor: React.FC = () => {
   const [selectedSalers, setSelectedSalers] = useState<MultiValue<SalerOption>>(
     []
   );
+  const [isHorizontal, setIsHorizontal] = useState(window?.innerWidth < 768);
+
   const [selectedDateRange, setSelectedDateRange] =
     useState<SingleValue<DateRangeOption>>(null);
   const [filteredData, setFilteredData] = useState<ChartData>({
@@ -101,7 +103,14 @@ const DefaultSupervisor: React.FC = () => {
     { value: "month", label: "ماه جاری" },
     { value: "custom", label: "انتخاب بازه" },
   ];
+  useEffect(() => {
+    const handleResize = () => {
+      setIsHorizontal(window.innerWidth < 768);
+    };
 
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   const customSelectStyles = {
     control: (base: any) => ({
       ...base,
@@ -122,6 +131,8 @@ const DefaultSupervisor: React.FC = () => {
 
   const chartOptions = {
     responsive: true,
+
+    indexAxis: isHorizontal ? "y" : "x",
     plugins: {
       legend: {
         position: "top" as const,
@@ -213,7 +224,7 @@ const DefaultSupervisor: React.FC = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className=" min-h-screen md:mx-16 mr-14 pb-16"
+      className=" min-h-screen md:mx-16 pb-16"
       dir="rtl"
     >
       {/* Header Section */}
@@ -222,7 +233,7 @@ const DefaultSupervisor: React.FC = () => {
         animate={{ x: 0, opacity: 1 }}
         className="absolute top-4 left-4 z-10"
       >
-        <div className="bg-white rounded-2xl shadow-sm p-2 flex items-center gap-4">
+        <div className="bg-white rounded-2xl shadow-sm p-2  flex items-center gap-4">
           <div className="bg-[#6FBDF5] rounded-full p-3">
             <FaUserCircle size={24} className="text-white" />
           </div>
@@ -241,11 +252,11 @@ const DefaultSupervisor: React.FC = () => {
       </motion.div>
 
       {/* Chart Section */}
-      <div className="mt-32 mb-8">
+      <div className="mt-32  mb-8">
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="bg-white p-6 rounded-xl shadow-lg"
+          className="bg-white  p-6 rounded-xl shadow-lg"
         >
           {/* Filters */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -300,9 +311,17 @@ const DefaultSupervisor: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
-              className="w-full h-[200px] sm:h-[400px] md:h-[500px] lg:w-1/2 lg:h-[400px] mx-auto"
+              className="w-full h-[400px] sm:h-[600px] md:h-[500px] lg:w-1/2 lg:h-[400px] mx-auto md:mx-0"
             >
-              <Bar data={filteredData} options={chartOptions} />
+              <Bar
+                data={filteredData}
+                options={{
+                  ...chartOptions,
+                  maintainAspectRatio: false,
+                  barThickness: window?.innerWidth < 768 ? 20 : 10,
+                  categoryPercentage: 0.8,
+                }}
+              />{" "}
             </motion.div>
           </AnimatePresence>
         </motion.div>

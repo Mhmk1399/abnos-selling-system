@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Tab } from "@headlessui/react";
 import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
@@ -16,6 +16,7 @@ const FileInput = () => {
     { name: "سابقه خرید", icon: <FaHistory /> },
     { name: "نظرات", icon: <FaComments /> },
   ];
+
 
   const PersonalInfo = () => (
     <motion.div
