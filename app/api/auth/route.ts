@@ -22,7 +22,8 @@ try {
       phoneNumber,
       password: hashedPassword,
     });
-
+    console.log(newUser);
+    
     await newUser.save();
 
     const token = jwt.sign(
