@@ -7,8 +7,8 @@ export async function POST(request: NextRequest) {
   await connect();
   try {
     const body = await request.json();
-    const costumer = await Customer.create(body);
-    return NextResponse.json({ costumer }, { status: 201 });
+    const customer = await Customer.create(body);
+    return NextResponse.json({ customer }, { status: 201 });
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to create customer" },

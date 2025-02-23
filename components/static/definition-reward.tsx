@@ -7,11 +7,12 @@ import { BsTrophy } from "react-icons/bs";
 import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-import { s } from "framer-motion/client";
 
 interface RewardForm {
   saler: string;
-  customer: string;
+  customer: {
+    name: string
+  }
   startDate: string;
   endDate: string;
   amount: string;
@@ -24,7 +25,9 @@ const DefinitionReward = () => {
   const [rewards, setRewards] = useState<RewardForm[]>([]);
   const [currentReward, setCurrentReward] = useState<RewardForm>({
     saler: "",
-    customer: "",
+    customer: {
+      name: "",
+    },
     startDate: "",
     endDate: "",
     amount: "",
@@ -63,7 +66,9 @@ const DefinitionReward = () => {
       //   setIsModalOpen(false);
       setCurrentReward({
         saler: "",
-        customer: "",
+        customer: {
+          name: "",
+        },
         startDate: "",
         endDate: "",
         amount: "",
@@ -86,7 +91,7 @@ const DefinitionReward = () => {
         const data = await response.json();
         console.log(data);
 
-        setRewards([...rewards, data.reward]);
+        setRewards([...rewards, data.reward[0]]);;
         setIsModalOpen(false);
       } catch (error) {
         console.error("Error fetching rewards:", error);
@@ -102,7 +107,7 @@ const DefinitionReward = () => {
       className="p-6 mx-20"
     >
       <div className="flex flex-col md:flex-row justify-between items-center mb-8">
-        <h2 className="text-2xl font-bold text-[#6FBDF5] flex items-center gap-2">
+        <h2 className="text-2xl text-nowrap font-bold text-[#6FBDF5] flex items-center gap-2">
           <BsTrophy />
           تعریف پاداش فروشندگان
         </h2>
@@ -128,7 +133,7 @@ const DefinitionReward = () => {
           >
             <h3 className="font-bold text-lg mb-2">{reward?.saler || ""}</h3>
             <div className="text-sm text-gray-600">
-              <p className="text-gray-600">مشتری: {reward?.customer}</p>
+              <p className="text-gray-600">مشتری: {reward?.customer?.name}</p>
               <p className="text-gray-600">مبلغ: {reward?.amount} تومان</p>
               <p className="text-gray-600">شهر: {reward?.city}</p>
             </div>
@@ -181,7 +186,7 @@ const DefinitionReward = () => {
                 onChange={(e) =>
                   setCurrentReward({
                     ...currentReward,
-                    customer: e.target.value,
+                    customer: { name: e.target.value },
                   })
                 }
               />

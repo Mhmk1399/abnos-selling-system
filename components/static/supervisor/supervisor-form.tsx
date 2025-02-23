@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { MdDashboard } from "react-icons/md";
 import { FaUserFriends } from "react-icons/fa";
@@ -41,23 +41,23 @@ const SupervisorForm = () => {
     { id: "settings", icon: <AiOutlineGift size={23} />, title: "تعریف پاداش" },
   ];
 
-  const renderComponent = () => {
+  const renderComponent = useMemo(() => {
     switch (activeComponent) {
       case "dashboard":
         return <DefaultSupervisor />;
       case "sales":
-        return <div className="p-4">Sales Content</div>;
+        return null;
       case "analytics":
-        return <div className="p-4">Analytics Content</div>;
+        return null;
       case "customers":
-        return <div className="p-4">Customers Content</div>;
+        return null;
       case "settings":
         return <DefinitionReward />;
 
       default:
         return <DefaultSupervisor />;
     }
-  };
+  }, [activeComponent]);
 
   return (
     <div className="flex" dir="rtl">
@@ -111,7 +111,7 @@ const SupervisorForm = () => {
           transition={{ duration: 0.5 }}
           onClick={() => setIsOpen(false)}
         >
-          {renderComponent()}
+          {renderComponent}
         </motion.div>
       </div>
     </div>

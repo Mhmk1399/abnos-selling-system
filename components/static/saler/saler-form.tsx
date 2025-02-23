@@ -46,20 +46,20 @@ const SalerForm = () => {
       case "dashboard":
         return <DefaultDashboard />;
       case "sales":
-        return <div className="p-4">Sales Content</div>;
+        return null;
       case "analytics":
-        return <div className="p-4">Analytics Content</div>;
+        return null;
       case "customers":
         return <Costumers />;
       case "settings":
-        return <div className="p-4">Settings Content</div>;
+        return null;
       default:
         return <DefaultDashboard />;
     }
   };
 
   return (
-    <div className="flex  " dir="rtl">
+    <div className="flex" dir="rtl">
       <motion.div
         animate={{ width: isOpen ? "240px" : "70px" }}
         className={`min-h-screen bg-[#6FBDF5] ${
