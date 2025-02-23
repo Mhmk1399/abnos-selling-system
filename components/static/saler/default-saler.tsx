@@ -72,12 +72,11 @@ const DefaultDashboard = () => {
     // Fetch username
     const fetchUsername = async () => {
       try {
-        const response = await fetch("/api/auth", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+        const response = await fetch("/api/auth/id", {
+          method: "POST",
+          body: JSON.stringify({
+            token: localStorage.getItem("token"),
+          }),
         });
         const data = await response.json();
         console.log("Username:", data);
@@ -115,7 +114,7 @@ const DefaultDashboard = () => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="p-6 min-h-screen mx-36"
+        className="p-6 min-h-screen mr-16"
         dir="rtl"
       >
         {/* Date and Time Header */}
