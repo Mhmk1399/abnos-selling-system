@@ -25,13 +25,13 @@ export const Costumers = () => {
   ];
 
   useEffect(() => {
-    fetchCustomers();
+    fetchCustomer();
   }, []);
 
-  const fetchCustomers = async () => {
+  const fetchCustomer = async () => {
     const response = await fetch('/api/customer');
     const data = await response.json();
-    setCustomers(data.costumers);
+    setCustomers(data.customer);
 };
 
 const handleSubmit = async (e: React.FormEvent) => {
@@ -43,7 +43,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     });
     
     if (response.ok) {
-        await fetchCustomers();
+        await fetchCustomer();
         setActiveTab('list');
         setFormData({
             name: '',

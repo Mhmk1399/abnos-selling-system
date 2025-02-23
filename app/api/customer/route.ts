@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/lib/data";
 import Customer from "@/models/customer";
+import customer from "@/models/customer";
 
 export async function POST(request: NextRequest) {
   await connect();
@@ -19,8 +20,8 @@ export async function POST(request: NextRequest) {
 export async function GET() {
   await connect();
   try {
-    const costumers = await Customer.find();
-    return NextResponse.json({ costumers });
+    const customer = await Customer.find();
+    return NextResponse.json({ customer }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to fetch customers" },
