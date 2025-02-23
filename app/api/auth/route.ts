@@ -30,7 +30,7 @@ export async function POST(request: Request) {
         phoneNumber: newUser.phone,
       },
       process.env.JWT_SECRET!,
-      { expiresIn: "1h" }
+      { expiresIn: "12h" }
     );
 
     return NextResponse.json(

@@ -63,7 +63,9 @@ const SalerForm = () => {
     <div className="flex  " dir="rtl">
       <motion.div
         animate={{ width: isOpen ? "240px" : "70px" }}
-        className="min-h-screen bg-[#6FBDF5] z-[9999] text-white py-3 fixed"
+        className={`min-h-screen bg-[#6FBDF5] ${
+          isOpen ? "backdrop-blur-sm bg-opacity-80" : ""
+        } z-[9999] text-white py-3 fixed `}
       >
         <motion.div
           animate={isOpen ? { x: 0 } : { x: -10 }}

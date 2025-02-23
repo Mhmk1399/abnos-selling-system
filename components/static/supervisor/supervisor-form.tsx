@@ -12,6 +12,7 @@ import {
 import { HiMenuAlt3 } from "react-icons/hi";
 import { AiOutlineAim, AiOutlineGift } from "react-icons/ai";
 import DefaultSupervisor from "./default-supervisor";
+import DefinitionReward from "../definition-reward";
 
 const SupervisorForm = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,7 +52,8 @@ const SupervisorForm = () => {
       case "customers":
         return <div className="p-4">Customers Content</div>;
       case "settings":
-        return <div className="p-4">Settings Content</div>;
+        return <DefinitionReward />;
+
       default:
         return <DefaultSupervisor />;
     }
@@ -108,7 +110,6 @@ const SupervisorForm = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           onClick={() => setIsOpen(false)}
-
         >
           {renderComponent()}
         </motion.div>

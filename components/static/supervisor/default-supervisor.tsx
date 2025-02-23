@@ -6,7 +6,7 @@ import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { FaUserCircle } from "react-icons/fa";
-import { BsCalendarEvent, BsClock, BsTelephoneForward } from "react-icons/bs";
+import { BsCalendarEvent, BsTelephoneForward } from "react-icons/bs";
 import { AiOutlineAim, AiOutlineGift } from "react-icons/ai";
 import { Bar } from "react-chartjs-2";
 import { BiFilterAlt } from "react-icons/bi";
@@ -51,9 +51,9 @@ interface ChartData {
 }
 
 const DefaultSupervisor: React.FC = () => {
-  const [currentTime, setCurrentTime] = useState<string>(
-    moment().format("HH:mm:ss")
-  );
+  // const [currentTime, setCurrentTime] = useState<string>(
+  //   moment().format("HH:mm:ss")
+  // );
   const [username, setUsername] = useState<string>("سرپرست");
   const [selectedDate, setSelectedDate] = useState<any>(null);
   const [selectedSalers, setSelectedSalers] = useState<MultiValue<SalerOption>>(
@@ -157,22 +157,29 @@ const DefaultSupervisor: React.FC = () => {
   };
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(moment().format("HH:mm:ss"));
-    }, 1000);
+    // const timer = setInterval(() => {
+    //   setCurrentTime(moment().format("HH:mm:ss"));
+    // }, 1000);
 
     const fetchUsername = async () => {
       try {
-        const response = await fetch("/api/auth/id");
+        const response = await fetch("/api/auth/id", {
+          method: "POST",
+          body: JSON.stringify({
+            token: localStorage.getItem("token"),
+          }),
+        });
         const data = await response.json();
-        setUsername(data.username || "سرپرست");
+        console.log("Username:", data);
+
+        setUsername(data.name || "کاربر گرامی");
       } catch (error) {
         console.log("Using default username");
       }
     };
 
     fetchUsername();
-    return () => clearInterval(timer);
+    // return () => clearInterval(timer);
   }, []);
 
   const handleFilter = () => {
@@ -225,9 +232,9 @@ const DefaultSupervisor: React.FC = () => {
             <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
               <BsCalendarEvent size={14} />
               <span>{currentDate}</span>
-              <span className="mx-2">|</span>
+              {/* <span className="mx-2">|</span>
               <BsClock size={14} />
-              <span>{currentTime}</span>
+              <span>{currentTime}</span> */}
             </div>
           </div>
         </div>
