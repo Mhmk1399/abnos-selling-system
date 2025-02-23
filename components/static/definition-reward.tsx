@@ -50,10 +50,12 @@ const DefinitionReward = () => {
         method: "POST",
         body: JSON.stringify({
           ...currentReward,
+          customer:"",
           supervisor: "67badd17741200a6b19590af",
-          startDate: currentReward.startDate,
-          endDate: currentReward.endDate,
+          startDate: currentReward.startDate.toString(),
+          endDate: currentReward.endDate.toString(),
           saler: "67badd17741200a6b19590af",
+          price: "100000",
         }),
       });
 
