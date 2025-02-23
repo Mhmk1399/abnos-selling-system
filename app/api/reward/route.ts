@@ -7,7 +7,7 @@ export async function GET() {
     return Response.json({ error: "connection failed" });
   }
   try {
-    const reward = await Reward.find().populate("Costumer");
+    const reward = await Reward.find().populate("customer");
 
     return Response.json({ reward });
   } catch (error) {

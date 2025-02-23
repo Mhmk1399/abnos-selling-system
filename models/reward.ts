@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 const rewardSchema = new mongoose.Schema({
-  saler: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: false,

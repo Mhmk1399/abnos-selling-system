@@ -213,7 +213,7 @@ const DefaultSupervisor: React.FC = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className=" min-h-screen mx-16"
+      className=" min-h-screen md:mx-16 mr-14 pb-16"
       dir="rtl"
     >
       {/* Header Section */}
@@ -222,7 +222,7 @@ const DefaultSupervisor: React.FC = () => {
         animate={{ x: 0, opacity: 1 }}
         className="absolute top-4 left-4 z-10"
       >
-        <div className="bg-white rounded-2xl shadow-lg p-4 flex items-center gap-4">
+        <div className="bg-white rounded-2xl shadow-sm p-2 flex items-center gap-4">
           <div className="bg-[#6FBDF5] rounded-full p-3">
             <FaUserCircle size={24} className="text-white" />
           </div>
@@ -312,7 +312,7 @@ const DefaultSupervisor: React.FC = () => {
       <motion.div
         initial={{ y: 20 }}
         animate={{ y: 0 }}
-        className="grid grid-cols-1 md:grid-cols-3 gap-6"
+        className="grid grid-cols-1 md:grid-cols-3 gap-6 mx-4"
       >
         <motion.button
           whileHover={{ scale: 1.02 }}
