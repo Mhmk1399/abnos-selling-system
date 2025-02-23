@@ -3,12 +3,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { MdDashboard } from "react-icons/md";
 import { FaUserFriends } from "react-icons/fa";
-import {
-  BsCartCheck,
-  BsListCheck,
-  BsTelephone,
-  BsTelephoneForward,
-} from "react-icons/bs";
+import { BsCartCheck, BsTelephone, BsTelephoneForward } from "react-icons/bs";
 import { FiSettings } from "react-icons/fi";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { AiOutlineAim } from "react-icons/ai";

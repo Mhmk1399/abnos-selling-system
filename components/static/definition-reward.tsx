@@ -11,8 +11,8 @@ import persian_fa from "react-date-object/locales/persian_fa";
 interface RewardForm {
   saler: string;
   customer: {
-    name: string
-  }
+    name: string;
+  };
   startDate: string;
   endDate: string;
   amount: string;
@@ -63,19 +63,25 @@ const DefinitionReward = () => {
 
       //   const data = await response.json();
       //   setRewards([...rewards, data.reward]);
-      //   setIsModalOpen(false);
-      setCurrentReward({
-        saler: "",
-        customer: {
-          name: "",
-        },
-        startDate: "",
-        endDate: "",
-        amount: "",
-        price: "",
-        city: "",
-        product: [],
-      });
+      setIsModalOpen(false);
+      if (response.ok) {
+        console.log("Reward created successfully!");
+        setCurrentReward({
+          saler: "",
+          customer: {
+            name: "",
+          },
+          startDate: "",
+          endDate: "",
+          amount: "",
+          price: "",
+          city: "",
+          product: [],
+        });
+        setIsModalOpen(false);
+      } else {
+        console.error("Failed to create reward.");
+      }
     } catch (error) {
       console.error("Error creating reward:", error);
     }
@@ -91,7 +97,7 @@ const DefinitionReward = () => {
         const data = await response.json();
         console.log(data);
 
-        setRewards([...rewards, data.reward[0]]);;
+        setRewards([...rewards, data.reward[0]]);
         setIsModalOpen(false);
       } catch (error) {
         console.error("Error fetching rewards:", error);
