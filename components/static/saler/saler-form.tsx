@@ -27,7 +27,6 @@ const SalerForm = () => {
       title: "لیست مشتریان",
     },
     { id: "orders", icon: <BsCartCheck size={23} />, title: "سفارشات" },
-    { id: "customers", icon: <BsListCheck size={23} />, title: "لسیت سفارشات" },
     {
       id: "transactions",
       icon: <BsTelephone size={23} />,
