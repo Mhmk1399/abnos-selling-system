@@ -163,7 +163,7 @@ const DefaultSupervisor: React.FC = () => {
 
     const fetchUsername = async () => {
       try {
-        const response = await fetch("/api/supervisor");
+        const response = await fetch("/api/auth/id");
         const data = await response.json();
         setUsername(data.username || "سرپرست");
       } catch (error) {
