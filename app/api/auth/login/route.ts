@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
                 role: user.role,
               },
               process.env.JWT_SECRET!,
-              { expiresIn: "1h" }
+              { expiresIn: "12h" }
             );
 
         console.log('Login successful');
