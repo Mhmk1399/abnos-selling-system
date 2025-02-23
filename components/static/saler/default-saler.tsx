@@ -11,14 +11,14 @@ import {
   BsGraphUp,
   BsListCheck,
   BsCalendarEvent,
-  BsClock,
+  // BsClock,
   BsTelephoneFill,
 } from "react-icons/bs";
 import { AiFillStar, AiFillTrophy, AiOutlineTrophy } from "react-icons/ai";
 import FileInputModal from "../file-input-modal";
 
 const DefaultDashboard = () => {
-  const [currentTime, setCurrentTime] = useState("");
+  // const [currentTime, setCurrentTime] = useState("");
   const [username, setUsername] = useState("کاربر گرامی");
   const currentDate = moment().format("jYYYY/jMM/jDD");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,37 +51,45 @@ const DefaultDashboard = () => {
       setShowFileInput(true);
     }
   };
-  useEffect(() => {
-    // Set initial time
-    setCurrentTime(moment().format("HH:mm:ss"));
+  // useEffect(() => {
+  //   // Set initial time
+  //   setCurrentTime(moment().format("HH:mm:ss"));
 
-    // Update time every second
-    const timer = setInterval(() => {
-      setCurrentTime(moment().format("HH:mm:ss"));
-    }, 1000);
+  //   // Update time every second
+  //   const timer = setInterval(() => {
+  //     setCurrentTime(moment().format("HH:mm:ss"));
+  //   }, 1000);
 
-    return () => clearInterval(timer);
-  }, []);
+  //   return () => clearInterval(timer);
+  // }, []);
 
   useEffect(() => {
     // Time update
-    const timer = setInterval(() => {
-      setCurrentTime(moment().format("HH:mm:ss"));
-    }, 1000);
+    // const timer = setInterval(() => {
+    //   setCurrentTime(moment().format("HH:mm:ss"));
+    // }, 1000);
 
     // Fetch username
     const fetchUsername = async () => {
       try {
-        const response = await fetch("/api/user");
+        const response = await fetch("/api/auth", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         const data = await response.json();
-        setUsername(data.username || "کاربر گرامی");
+        console.log("Username:", data);
+
+        setUsername(data.name || "کاربر گرامی");
       } catch (error) {
         console.log("Using default username");
       }
     };
 
     fetchUsername();
-    return () => clearInterval(timer);
+    // return () => clearInterval(timer);
   }, []);
 
   const rewards = [
@@ -126,9 +134,9 @@ const DefaultDashboard = () => {
               <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
                 <BsCalendarEvent size={14} />
                 <span>{currentDate}</span>
-                <span className="mx-2">|</span>
+                {/* <span className="mx-2">|</span>
                 <BsClock size={14} />
-                <span>{currentTime}</span>
+                <span>{currentTime}</span> */}
               </div>
             </div>
           </div>

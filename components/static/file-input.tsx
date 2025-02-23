@@ -48,7 +48,9 @@ const FileInput = () => {
           <DatePicker
             calendar={persian}
             locale={persian_fa}
-            className="w-full"
+            className="w-full p-3 border-2 border-[#6FBDF5] shadow-md"
+            minDate={new Date(1921, 0, 1)}
+            maxDate={new Date()}
           />
         </div>
       </div>
@@ -121,7 +123,9 @@ const FileInput = () => {
           className="bg-white p-4 rounded-lg shadow-sm border border-[#6FBDF5]/20"
         >
           <div className="flex justify-between items-center">
-            <span className="text-lg font-bold">سفارش #{item}</span>
+            <span className="text-lg font-bold text-[#6FBDF5]">
+              سفارش #{item}
+            </span>
             <span className="text-[#6FBDF5]">۱,۲۰۰,۰۰۰ تومان</span>
           </div>
           <div className="text-gray-600 mt-2">تاریخ: ۱۴۰۲/۰۸/۱۵</div>
@@ -140,7 +144,7 @@ const FileInput = () => {
       <div className="bg-white p-4 rounded-lg shadow-sm">
         <textarea
           placeholder="نظر خود را وارد کنید..."
-          className="w-full p-3 border-2 border-[#6FBDF5] rounded-lg focus:outline-none focus:border-[#5CA8E0] h-32"
+          className="w-full p-3 text-black border-2 border-[#6FBDF5] rounded-lg focus:outline-none focus:border-[#5CA8E0] h-32"
         />
         <button className="mt-2 bg-[#6FBDF5] text-white px-4 py-2 rounded-lg hover:bg-[#5CA8E0] transition-colors">
           ثبت نظر
@@ -155,8 +159,8 @@ const FileInput = () => {
             className="bg-white p-4 rounded-lg shadow-sm border border-[#6FBDF5]/20"
           >
             <div className="flex justify-between items-center mb-2">
-              <span className="font-bold">کارشناس فروش</span>
-              <span className="text-gray-500 text-sm">۱۴۰۲/۰۸/۱۵</span>
+              <span className="font-bold text-black">کارشناس فروش</span>
+              <span className="text-[#6FBDF5] text-sm">۱۴۰۲/۰۸/۱۵</span>
             </div>
             <p className="text-gray-700">نظر کاربر در مورد محصول یا خدمات</p>
           </div>
@@ -168,7 +172,7 @@ const FileInput = () => {
   return (
     <div className="p-6 bg-gradient-to-br from-gray-50 to-gray-100" dir="rtl">
       <Tab.Group onChange={setSelectedTab}>
-        <Tab.List className="flex space-x-2 rounded-2xl bg-white p-2 shadow-lg">
+        <Tab.List className="flex space-x-2 justify-center items-center rounded-2xl bg-white p-2 shadow-lg">
           {tabs.map((tab) => (
             <Tab
               key={tab.name}
