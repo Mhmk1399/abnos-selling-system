@@ -6,8 +6,11 @@ import { motion } from "framer-motion";
 interface Target {
   _id: string;
   customer: {
+    _id: string;
     name: string;
-    company: string;
+    phones: string[];
+    type: string;
+    city: string;
   };
   startDate: string;
   endDate: string;
@@ -15,6 +18,8 @@ interface Target {
   price: string;
   city: string;
   product: string[];
+  supervisor: string;
+  timestamp: string;
 }
 
 const SalerTargets = () => {
@@ -24,14 +29,13 @@ const SalerTargets = () => {
 
   const fetchTargets = async () => {
     try {
-      const token = localStorage.getItem("token");
-      // Change the endpoint to match the defined API route
+      // const token = localStorage.getItem("token");
       const response = await fetch("/api/targets/id", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-          id : localStorage.getItem("user") || ""
+          // Authorization: `Bearer ${token}`,
+          id: localStorage.getItem("user") || "",
         },
       });
 
@@ -42,8 +46,8 @@ const SalerTargets = () => {
       const data = await response.json();
       console.log("Received data:", data);
 
-      // Ensure we're accessing the correct data structure
-      setTargets(Array.isArray(data.target) ? data.target : []);
+      // Convert single target object to array with one item
+      setTargets(Array.isArray(data.target) ? data.target : [data.target]);
     } catch (error) {
       console.log("Error fetching targets:", error);
       setTargets([]);
@@ -58,15 +62,22 @@ const SalerTargets = () => {
 
   const columns = [
     {
-      key: "customer.name",
+      key: "name",
       header: "نام مشتری",
       sortable: true,
-      render: (value: string) => <span className="font-medium">{value}</span>,
+      render: (target: Target) => (
+        <span className="font-medium">{target?.customer?.name}</span>
+      ),
     },
     {
-      key: "customer.company",
-      header: "شرکت",
+      key: "company",
+      header: "نوع",
       sortable: true,
+      render: (target: Target) => (
+        <span className="font-medium">
+          {target?.customer?.type === "individual" ? "حقیقی" : "حقوقی"}
+        </span>
+      ),
     },
     {
       key: "startDate",
@@ -136,10 +147,11 @@ const SalerTargets = () => {
 
       <DynamicTable
         columns={columns}
-        data={
-          targets?.map((target) => ({ ...target, date: target.startDate })) ||
-          []
-        }
+        data={targets.map((target) => ({
+          ...target,
+          name: target.customer.name,
+          date: target.startDate, // or any appropriate date field
+        }))}
         loading={loading}
         onSort={(key, direction) => {
           console.log("Sorting by:", key, direction);

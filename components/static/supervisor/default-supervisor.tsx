@@ -59,7 +59,7 @@ const DefaultSupervisor: React.FC = () => {
   const [selectedSalers, setSelectedSalers] = useState<MultiValue<SalerOption>>(
     []
   );
-  const [isHorizontal, setIsHorizontal] = useState(window?.innerWidth < 768);
+  const [isHorizontal, setIsHorizontal] = useState(false);
 
   const [selectedDateRange, setSelectedDateRange] =
     useState<SingleValue<DateRangeOption>>(null);
@@ -104,6 +104,8 @@ const DefaultSupervisor: React.FC = () => {
     { value: "custom", label: "انتخاب بازه" },
   ];
   useEffect(() => {
+    setIsHorizontal(window.innerWidth < 768);
+
     const handleResize = () => {
       setIsHorizontal(window.innerWidth < 768);
     };

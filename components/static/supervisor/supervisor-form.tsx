@@ -12,6 +12,7 @@ import {
 import { HiMenuAlt3 } from "react-icons/hi";
 import { AiOutlineAim, AiOutlineGift } from "react-icons/ai";
 import DefaultSupervisor from "./default-supervisor";
+import DefinitionTarget from "./definition-target";
 import DefinitionReward from "../definition-reward";
 
 const SupervisorForm = () => {
@@ -38,8 +39,8 @@ const SupervisorForm = () => {
       icon: <BsTelephoneForward size={23} />,
       title: "لیست تماس ها",
     },
-    { id: "suppliers", icon: <AiOutlineAim size={23} />, title: "تعریف اهداف" },
-    { id: "settings", icon: <AiOutlineGift size={23} />, title: "تعریف پاداش" },
+    { id: "target", icon: <AiOutlineAim size={23} />, title: "تعریف اهداف" },
+    { id: "reward", icon: <AiOutlineGift size={23} />, title: "تعریف پاداش" },
   ];
 
   const renderComponent = useMemo(() => {
@@ -50,9 +51,9 @@ const SupervisorForm = () => {
         return null;
       case "analytics":
         return null;
-      case "customers":
-        return null;
-      case "settings":
+      case "target":
+        return <DefinitionTarget />;
+      case "reward":
         return <DefinitionReward />;
 
       default:

@@ -1,14 +1,14 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
   },
-  role:  {
+  role: {
     type: String,
     required: true,
-    enum: ['saler', 'supervisor', 'manager', 'superAdmin'],
-    default: 'saler'
+    enum: ["saler", "supervisor", "manager", "superAdmin"],
+    default: "saler",
   },
   phoneNumber: {
     type: String,
@@ -18,14 +18,16 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-    created: {
-        type: Date,
-        default: Date.now,
-        immutable: true
+  created: {
+    type: Date,
+    default: Date.now,
+    immutable: true,
+  },
+  info: [
+    {
+      type: String,
+      required: false,
     },
-    info:[{
-        type: String,
-        required: false
-    }]
+  ],
 });
-export default mongoose.models.User || mongoose.model('User', userSchema);
+export default mongoose.models.User || mongoose.model("User", userSchema);

@@ -11,7 +11,11 @@ export async function GET(request: NextRequest) {
     return Response.json({ error: "header not found" });
   }
   try {
-    const target = await Target.findOne({ saler: id }).populate("customer");
+    const target = await Target.findOne({ saler: id }).populate({
+      path: "customer",
+      model: "Customers",
+      select: " phones type city name",
+    });
     return Response.json({ target });
   } catch (error) {
     return Response.json({ error: error });

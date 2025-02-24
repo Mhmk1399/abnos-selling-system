@@ -8,13 +8,17 @@ export async function POST(request: NextRequest) {
   }
   try {
     const body = await request.json();
+    const salers = body.saler;
+    console.log(salers, "salers");
+
     if (!body) {
       return NextResponse.json({ error: "Invalid request body" });
     }
-    console.log(body);
+    console.log(body, "body");
 
-    const target = await Target.create(body);
-    return NextResponse.json({ target });
+    await Target.create(body);
+
+    return NextResponse.json({ status: "success" });
   } catch (error) {
     return NextResponse.json({ error: error });
   }

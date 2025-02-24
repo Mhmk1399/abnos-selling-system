@@ -1,22 +1,23 @@
 import mongoose from "mongoose";
 const targetSchema = new mongoose.Schema({
-  saler: {
+  saler: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
-  },
+  }],
   customer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Customer",
-    required: true,
+    required: false,
+    default: null,
   },
   startDate: {
     type: String,
-    required: true,
+    required: false,
   },
   endDate: {
     type: String,
-    required: true,
+    required: false,
   },
 
   amount: {
@@ -40,7 +41,7 @@ const targetSchema = new mongoose.Schema({
   supervisor: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: true,
+    required: false,
   },
   timestamp: { type: Date, default: Date.now },
 });

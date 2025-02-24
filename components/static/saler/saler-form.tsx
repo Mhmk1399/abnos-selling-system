@@ -53,8 +53,8 @@ const SalerForm = () => {
         return <SalerTargets />;
       case "settings":
         return null;
-        case "transactions":
-          return <AddCall />;
+      case "transactions":
+        return <AddCall />;
       default:
         return <DefaultDashboard />;
     }
@@ -115,7 +115,7 @@ const SalerForm = () => {
         </div>
       </motion.div>
 
-      <div className="flex-1 p-4">
+      <div className="flex-1 p-2">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
