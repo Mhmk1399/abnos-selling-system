@@ -7,8 +7,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "connection failed" });
   }
   try {
-    console.log(request.body);
-    const target = await Target.create(request.body);
+    const body = await request.json();
+    if (!body) {
+      return NextResponse.json({ error: "Invalid request body" });
+    }
+    console.log(body);
+
+    const target = await Target.create(body);
     return NextResponse.json({ target });
   } catch (error) {
     return NextResponse.json({ error: error });

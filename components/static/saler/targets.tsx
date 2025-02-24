@@ -19,17 +19,19 @@ interface Target {
 
 const SalerTargets = () => {
   const [targets, setTargets] = useState<Target[]>([]);
+
   const [loading, setLoading] = useState(true);
 
   const fetchTargets = async () => {
     try {
       const token = localStorage.getItem("token");
+      // Change the endpoint to match the defined API route
       const response = await fetch("/api/targets/id", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
-          id: token || "", // Add the id header required by your API route
+          id : localStorage.getItem("user") || ""
         },
       });
 
@@ -38,9 +40,13 @@ const SalerTargets = () => {
       }
 
       const data = await response.json();
-      setTargets(data.target);
+      console.log("Received data:", data);
+
+      // Ensure we're accessing the correct data structure
+      setTargets(Array.isArray(data.target) ? data.target : []);
     } catch (error) {
       console.log("Error fetching targets:", error);
+      setTargets([]);
     } finally {
       setLoading(false);
     }
@@ -130,7 +136,10 @@ const SalerTargets = () => {
 
       <DynamicTable
         columns={columns}
-        data={targets.map((target) => ({ ...target, date: target.startDate }))}
+        data={
+          targets?.map((target) => ({ ...target, date: target.startDate })) ||
+          []
+        }
         loading={loading}
         onSort={(key, direction) => {
           console.log("Sorting by:", key, direction);
