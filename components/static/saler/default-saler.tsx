@@ -27,6 +27,10 @@ const DefaultDashboard = () => {
   const [searchOfficer, setSearchOfficer] = useState("");
   const overlayRef = useRef(null);
   const [showFileInput, setShowFileInput] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    type: "",
+  });
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === overlayRef.current) {
@@ -90,6 +94,21 @@ const DefaultDashboard = () => {
     fetchUsername();
     // return () => clearInterval(timer);
   }, []);
+
+  const handleSubmit = async () => {
+    const response = await fetch("/api/customer", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    if (response.ok) {
+      setFormData({
+        name: "",
+        type: "",
+      });
+    }
+  };
 
   const rewards = [
     {
@@ -250,18 +269,29 @@ const DefaultDashboard = () => {
                 <Tab.Panel>
                   <div className="max-h-64 overflow-y-auto space-y-2">
                     <input
+                      onChange={(e) =>
+                        setFormData({ ...formData, name: e.target.value })
+                      }
                       type="text"
                       placeholder="نام مشتری..."
                       className="w-full p-3 pr-12 border-2 text-black border-[#E8F4FE] rounded-xl focus:outline-none focus:border-[#6FBDF5] bg-[#F8FBFE]"
                     />
-                    <select className="w-full p-3 pr-12 border-2 text-black border-[#E8F4FE] rounded-xl focus:outline-none focus:border-[#6FBDF5] bg-[#F8FBFE]">
+                    <select
+                      onChange={(e) =>
+                        setFormData({ ...formData, type: e.target.value })
+                      }
+                      className="w-full p-3 pr-12 border-2 text-black border-[#E8F4FE] rounded-xl focus:outline-none focus:border-[#6FBDF5] bg-[#F8FBFE]"
+                    >
                       <option value="">انتخاب نوع مشتری</option>
-                      <option value="present">نماینده</option>
                       <option value="individual">شخصی</option>
-                      <option value="company">کمپانی یا شرکت</option>
+                      <option value="company">شرکت</option>
+                      <option value="presenter">معرف</option>
                     </select>
                     <button
-                      onClick={() => handleCustomerSelection(true)}
+                      onClick={() => {
+                        handleCustomerSelection(true);
+                        handleSubmit();
+                      }}
                       className="px-4 py-2 w-full rounded-lg bg-[#6FBDF5] text-white"
                     >
                       ثبت و ادامه
