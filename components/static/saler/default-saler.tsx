@@ -4,28 +4,120 @@ import { motion } from "framer-motion";
 import moment from "moment-jalaali";
 import { Tab } from "@headlessui/react";
 import { BiSearch } from "react-icons/bi";
-import { FaUser, FaUserCircle } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
 
 import {
   BsTelephone,
   BsGraphUp,
   BsListCheck,
   BsCalendarEvent,
-  // BsClock,
   BsTelephoneFill,
 } from "react-icons/bs";
 import { AiFillStar, AiFillTrophy, AiOutlineTrophy } from "react-icons/ai";
 import FileInputModal from "../file-input-modal";
 
   import FileInput from "../file-input";
+interface Target {
+  _id: string;
+  saler: string[];
+  customer: {
+    _id: string;
+    name: string;
+    phones: string[];
+    type: string;
+    city: string;
+  };
+  startDate: string;
+  endDate: string;
+  amount: string;
+  price: string;
+  city: string;
+  product: string[];
+  date: string;
+  supervisor: string;
+  timestamp: string;
+}
+const TargetDisplay = ({ target }: { target: Target }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-gradient-to-br from-white mb-8 h-fit to-[#F8FBFE] rounded-2xl shadow-lg py-2 px-8"
+    >
+      <div className="flex flex-col md:flex-col justify-center items-start md:items-center mb-8">
+        <h2 className="text-2xl font-bold text-[#6FBDF5] mb-2">هدف فعلی</h2>
+        <div className="flex items-center justify-center gap-2 text-gray-600">
+          <span className="bg-blue-50 px-3 py-1 rounded-full text-sm">
+            {target?.startDate}
+          </span>
+          <span>تا</span>
+          <span className="bg-blue-50 px-3 py-1 rounded-full text-sm">
+            {target?.endDate}
+          </span>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-white rounded-xl p-6 shadow-sm">
+          <h3 className="text-lg font-semibold text-gray-700 mb-4">
+            اطلاعات مشتری
+          </h3>
+          <div className="flex flex-row gap-8 justify-center items-center">
+            <div className="flex justify-between items-center gap-2">
+              <span className="text-gray-600">نام:</span>
+              <span className="font-medium text-black">
+                {target?.customer?.name || "-"}
+              </span>
+            </div>
+            <div className="flex justify-between items-center gap-2">
+              <span className="text-gray-600">شهر:</span>
+              <span className="font-medium text-black">
+                {target?.customer?.city || "-"}
+              </span>
+            </div>
+            <div className="flex justify-between items-center gap-2">
+              <span className="text-gray-600">نوع:</span>
+              <span className="font-medium text-black">
+                {target?.customer?.type || "-"}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl p-6 shadow-sm">
+          <h3 className="text-lg font-semibold text-gray-700 mb-4">
+            جزئیات هدف
+          </h3>
+          <div className="flex flex-row gap-8 justify-center items-center">
+            <div className="flex justify-between items-center gap-2">
+              <span className="text-gray-600">مقدار:</span>
+              <span className="font-medium text-black">
+                {target?.amount || "-"}
+              </span>
+            </div>
+            <div className="flex justify-between items-center gap-2">
+              <span className="text-gray-600">قیمت:</span>
+              <span className="font-medium text-black">
+                {target?.price || "-"}
+              </span>
+            </div>
+            <div className="flex justify-between items-center gap-2">
+              <span className="text-gray-600">تعداد محصولات:</span>
+              <span className="font-medium text-black">
+                {target?.product?.length || 0}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
 const DefaultDashboard = () => {
-  // const [currentTime, setCurrentTime] = useState("");
   const [username, setUsername] = useState("کاربر گرامی");
   const currentDate = moment().format("jYYYY/jMM/jDD");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchName, setSearchName] = useState("");
-  const [searchPhone, setSearchPhone] = useState("");
-  const [searchOfficer, setSearchOfficer] = useState("");
   const [customers, setCustomers] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState('');
   const overlayRef = useRef(null);
@@ -35,6 +127,7 @@ const DefaultDashboard = () => {
     type: "",
     _id: "",
   });
+  const [currentTarget, setCurrentTarget] = useState<Target[]>([]);
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === overlayRef.current) {
@@ -43,50 +136,27 @@ const DefaultDashboard = () => {
   };
   const handleCustomerSelection = async (isNewCustomer: boolean) => {
     if (isNewCustomer) {
-      // For new customer, post data first
       try {
-        // Post data to server
-        // await postNewCustomer({ searchName, searchPhone, searchOfficer });
-
         setIsModalOpen(false);
         setShowFileInput(true);
       } catch (error) {
         console.log("Error creating customer:", error);
       }
     } else {
-      // For existing customer, directly show FileInput
       setIsModalOpen(false);
       setShowFileInput(true);
     }
   };
   const fetchCustomer = async () => {
-    const response = await fetch('/api/customer');
+    const response = await fetch("/api/customer");
     const data = await response.json();
     setCustomers(data.customer);
-};  
-useEffect(() => {
-  fetchCustomer();
+  };
+  useEffect(() => {
+    fetchCustomer();
   }, []);
 
-  // useEffect(() => {
-  //   // Set initial time
-  //   setCurrentTime(moment().format("HH:mm:ss"));
-
-  //   // Update time every second
-  //   const timer = setInterval(() => {
-  //     setCurrentTime(moment().format("HH:mm:ss"));
-  //   }, 1000);
-
-  //   return () => clearInterval(timer);
-  // }, []);
-
   useEffect(() => {
-    // Time update
-    // const timer = setInterval(() => {
-    //   setCurrentTime(moment().format("HH:mm:ss"));
-    // }, 1000);
-
-    // Fetch username
     const fetchUsername = async () => {
       try {
         const response = await fetch("/api/auth/id", {
@@ -105,7 +175,6 @@ useEffect(() => {
     };
 
     fetchUsername();
-    // return () => clearInterval(timer);
   }, []);
 
   const handleSubmit = async () => {
@@ -125,6 +194,33 @@ useEffect(() => {
    
   };
   
+  const fetchTargets = async () => {
+    try {
+      const response = await fetch("/api/targets/id", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          id: localStorage.getItem("user") || "",
+        },
+      });
+      const data = await response.json();
+
+      const targetsArray = data.target ? [data.target] : [];
+      setCurrentTarget(targetsArray);
+    } catch (error) {
+      console.error("Error fetching targets:", error);
+      setCurrentTarget([]);
+    }
+  };
+
+  // Add useEffect to fetch data
+  useEffect(() => {
+    fetchTargets();
+  }, []);
+
+  // Add these columns for the table
+
+
   const rewards = [
     {
       title: "فروش برتر هفته",
@@ -167,9 +263,6 @@ useEffect(() => {
               <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
                 <BsCalendarEvent size={14} />
                 <span>{currentDate}</span>
-                {/* <span className="mx-2">|</span>
-                <BsClock size={14} />
-                <span>{currentTime}</span> */}
               </div>
             </div>
           </div>
@@ -200,6 +293,11 @@ useEffect(() => {
             </motion.div>
           ))}
         </motion.div>
+
+        {currentTarget &&
+          currentTarget.map((target: Target) => (
+            <TargetDisplay key={target._id} target={target} />
+          ))}
 
         {/* Action Buttons */}
         <motion.div
@@ -357,6 +455,8 @@ useEffect(() => {
                 </motion.button>
               </div> */}
             {/* </Tab.Group>
+              </Tab.Panels>
+            </Tab.Group>
           </motion.div>
         </motion.div>
       )} */}

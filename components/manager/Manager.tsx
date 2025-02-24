@@ -15,7 +15,10 @@ export default function Manager() {
   const [activeTab, setActiveTab] = useState("calls");
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-100 to-blue-50 p-8" dir="rtl">
+    <div
+      className="min-h-screen bg-gradient-to-r from-blue-100 to-blue-50 p-8"
+      dir="rtl"
+    >
       <h1 className="text-2xl font-bold text-gray-800 mb-6">داشبورد مدیریت</h1>
       <div className=" rounded-lg p-2 shadow-sm">
         <nav className="flex items-center gap-8">

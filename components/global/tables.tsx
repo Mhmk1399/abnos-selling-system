@@ -179,9 +179,9 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
   }, [filteredData, sortConfig]);
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6" dir="rtl">
+    <div className="bg-white rounded-xl shadow-lg p-6 " dir="rtl">
       {/* Filters */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
         {/* Search Input */}
         <div className="relative group">
           <input
@@ -189,7 +189,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
             placeholder="جستجو..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-4 pr-12 border-2 text-black border-[#E8F4FE] rounded-xl 
+            className="w-1/3 md:w-full p-4 pr-12 border-2 text-black border-[#E8F4FE] rounded-xl 
       focus:outline-none focus:border-[#6FBDF5] bg-[#F8FBFE] 
       transition-all duration-300 hover:border-[#6FBDF5]"
           />
@@ -210,6 +210,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
             render={<CustomInput />}
             calendarPosition="bottom-right"
             format="YYYY/MM/DD"
+            className="w-full"
           />
         </div>
       </div>
@@ -242,7 +243,9 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
               {loading ? (
                 <tr>
                   <td colSpan={columns.length} className="text-center py-8">
-                    <div className="animate-pulse">در حال بارگذاری...</div>
+                    <div className="animate-pulse font-bold text-[#6FBDF5]">
+                      در حال بارگذاری...
+                    </div>
                   </td>
                 </tr>
               ) : (

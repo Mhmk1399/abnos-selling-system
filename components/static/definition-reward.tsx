@@ -20,9 +20,16 @@ interface RewardForm {
   city: string;
   product: string[];
 }
+interface User {
+  _id: string;
+  name: string;
+  role: string;
+}
 
 const DefinitionReward = () => {
   const [rewards, setRewards] = useState<RewardForm[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [currentReward, setCurrentReward] = useState<RewardForm>({
     saler: "",
     customer: {
@@ -37,20 +44,13 @@ const DefinitionReward = () => {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const salerOptions = [
-    { value: "all", label: "همه" },
-    { value: "1", label: "علی محمدی" },
-    { value: "2", label: "سارا احمدی" },
-    { value: "3", label: "رضا کریمی" },
-  ];
-
   const handleSubmit = async () => {
     try {
       const response = await fetch("/api/reward", {
         method: "POST",
         body: JSON.stringify({
           ...currentReward,
-          customer:"",
+          customer: "",
           supervisor: "67badd17741200a6b19590af",
           startDate: currentReward.startDate.toString(),
           endDate: currentReward.endDate.toString(),
@@ -107,6 +107,48 @@ const DefinitionReward = () => {
     };
     fetchRewards();
   }, []);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch("/api/auth", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            id: localStorage.getItem("user") || "",
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setUsers(data.users);
+        }
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+    fetchUsers();
+  }, []);
+  // Add these handler functions
+  const handleUserSelect = (userId: string) => {
+    setSelectedUsers((prev) =>
+      prev.includes(userId)
+        ? prev.filter((id) => id !== userId)
+        : [...prev, userId]
+    );
+    setCurrentReward((prev) => ({
+      ...prev,
+      saler: selectedUsers.join(","),
+    }));
+  };
+
+  const handleSelectAll = () => {
+    const allUserIds = users.map((user) => user._id);
+    setSelectedUsers(selectedUsers.length === users.length ? [] : allUserIds);
+    setCurrentReward((prev) => ({
+      ...prev,
+      saler: selectedUsers.join(","),
+    }));
+  };
 
   return (
     <motion.div
@@ -173,66 +215,111 @@ const DefinitionReward = () => {
               </button>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-2">
-                <Select
-                  options={salerOptions}
-                  placeholder="انتخاب فروشنده"
-                  onChange={(option) =>
+            <div className="grid grid-cols-1 gap-6">
+              {/* User Selection Card */}
+              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                <div className="flex justify-between items-center mb-5">
+                  <h4 className="font-semibold text-gray-800 flex items-center gap-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 text-[#6FBDF5]"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                    </svg>
+                    انتخاب فروشندگان
+                  </h4>
+                  <button
+                    onClick={handleSelectAll}
+                    className="text-[#6FBDF5] hover:text-[#5CA8E0] text-sm font-medium px-3 py-1 rounded-full hover:bg-blue-50 transition-colors"
+                  >
+                    {selectedUsers.length === users.length
+                      ? "لغو انتخاب همه"
+                      : "انتخاب همه"}
+                  </button>
+                </div>
+
+                <div className="flex flex-wrap gap-3 max-h-48 overflow-y-auto custom-scrollbar p-2">
+                  {users.map((user) => (
+                    <label
+                      key={user._id}
+                      className="flex items-center gap-2 space-x-2 cursor-pointer bg-gray-50 hover:bg-gray-100 px-4 py-2 rounded-lg transition-colors"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedUsers.includes(user._id)}
+                        onChange={() => handleUserSelect(user._id)}
+                        className="form-checkbox h-5 w-5 text-[#6FBDF5] rounded border-gray-300 focus:ring-[#6FBDF5]"
+                      />
+                      <span className="text-gray-700 mr-2 select-none">
+                        {user.name}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Amount Input */}
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="مبلغ پاداش"
+                  className="w-full border border-gray-200 rounded-xl p-3 pr-12 text-gray-800 focus:ring-2 focus:ring-[#6FBDF5] focus:border-transparent outline-none transition-all"
+                  onChange={(e) =>
                     setCurrentReward({
                       ...currentReward,
-                      saler: option?.value || "",
+                      amount: e.target.value,
                     })
                   }
-                  className="text-right text-black"
+                />
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </span>
+              </div>
+
+              {/* Date Pickers */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <DatePicker
+                  calendar={persian}
+                  locale={persian_fa}
+                  calendarPosition="bottom-right"
+                  placeholder="تاریخ شروع"
+                  className="w-full border border-gray-200 rounded-xl p-3 text-right focus:ring-2 focus:ring-[#6FBDF5] focus:border-transparent outline-none transition-all"
+                  onChange={(date) => {
+                    setCurrentReward({
+                      ...currentReward,
+                      startDate: date?.toString() || "",
+                    });
+                  }}
+                />
+
+                <DatePicker
+                  calendar={persian}
+                  locale={persian_fa}
+                  calendarPosition="bottom-right"
+                  placeholder="تاریخ پایان"
+                  className="w-full border border-gray-200 rounded-xl p-3 text-right focus:ring-2 focus:ring-[#6FBDF5] focus:border-transparent outline-none transition-all"
+                  onChange={(date) => {
+                    setCurrentReward({
+                      ...currentReward,
+                      endDate: date?.toString() || "",
+                    });
+                  }}
                 />
               </div>
-              <input
-                type="text"
-                placeholder="نام مشتری"
-                className="border rounded-lg p-2 text-black"
-                onChange={(e) =>
-                  setCurrentReward({
-                    ...currentReward,
-                    customer: { name: e.target.value },
-                  })
-                }
-              />
-              <input
-                type="text"
-                placeholder="مبلغ پاداش"
-                className="border rounded-lg p-2 text-black"
-                onChange={(e) =>
-                  setCurrentReward({ ...currentReward, amount: e.target.value })
-                }
-              />
-              <DatePicker
-                calendar={persian}
-                locale={persian_fa}
-                calendarPosition="bottom-right"
-                placeholder="تاریخ شروع"
-                className=" border rounded-lg p-2 w-full text-right"
-                onChange={(date) => {
-                  setCurrentReward({
-                    ...currentReward,
-                    startDate: date?.toString() || "",
-                  });
-                }}
-              />
-
-              <DatePicker
-                calendar={persian}
-                locale={persian_fa}
-                calendarPosition="bottom-right"
-                placeholder="تاریخ پایان"
-                className=" border rounded-lg p-2 w-full text-right"
-                onChange={(date) => {
-                  setCurrentReward({
-                    ...currentReward,
-                    endDate: date?.toString() || "",
-                  });
-                }}
-              />
             </div>
 
             <div className="mt-6 flex justify-end gap-2">

@@ -81,9 +81,9 @@ export default function Home() {
   // ];
   return (
     <div className="">
-      <SalerForm />
-        {/* <SupervisorForm /> */}
-      {/* <FileInput /> */}
+      {/* <SalerForm /> */}
+      {/* <FileInput /> */} 
+      <SupervisorForm />
       {/* <DynamicTable
         columns={columns}
         data={sampleData}
