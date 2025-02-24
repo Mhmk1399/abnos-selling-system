@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { MdDashboard } from "react-icons/md";
 import { FaUserFriends } from "react-icons/fa";
@@ -17,6 +17,9 @@ import DefinitionReward from "../definition-reward";
 const SupervisorForm = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeComponent, setActiveComponent] = useState("");
+  const [closedWidth, setClosedWidth] = useState(
+    window?.innerWidth >= 1024 ? "50px" : "0px"
+  );
 
   const menuItems = [
     { id: "dashboard", icon: <MdDashboard size={23} />, title: "داشبورد" },
@@ -59,10 +62,19 @@ const SupervisorForm = () => {
     }
   }, [activeComponent]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setClosedWidth(window.innerWidth > 1024 ? "50px" : "50px");
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [window.innerWidth]);
+
   return (
     <div className="flex" dir="rtl">
       <motion.div
-        animate={{ width: isOpen ? "170px" : "0px" }}
+        animate={{ width: isOpen ? "200px" : closedWidth }}
         className={`min-h-screen bg-[#6FBDF5] ${
           isOpen ? "backdrop-blur-sm bg-opacity-80" : ""
         } z-[9999] text-white py-3 fixed `}
@@ -95,7 +107,7 @@ const SupervisorForm = () => {
 
               {/* Custom Tooltip */}
               {!isOpen && (
-                <div className="absolute right-[60px] bg-[#6FBDF5] px-3 py-2 rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 whitespace-nowrap z-50 before:content-[''] before:absolute before:top-[50%] before:right-[-5px] before:translate-y-[-50%] before:border-[6px] before:border-transparent before:border-l-[#6FBDF5]">
+                <div className="absolute hidden md:block right-[60px] bg-[#6FBDF5] px-3 py-2 rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 whitespace-nowrap z-50 before:content-[''] before:absolute before:top-[50%] before:right-[-5px] before:translate-y-[-50%] before:border-[6px] before:border-transparent before:border-l-[#6FBDF5]">
                   {item.title}
                 </div>
               )}
