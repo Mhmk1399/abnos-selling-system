@@ -9,6 +9,7 @@ import { HiMenuAlt3 } from "react-icons/hi";
 import { AiOutlineAim } from "react-icons/ai";
 import DefaultDashboard from "./default-saler";
 import { Costumers } from "@/components/costumers";
+import { AddCall } from "@/components/addCall";
 
 const SalerForm = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -48,6 +49,8 @@ const SalerForm = () => {
         return <Costumers />;
       case "settings":
         return null;
+        case "transactions":
+          return <AddCall />;
       default:
         return <DefaultDashboard />;
     }

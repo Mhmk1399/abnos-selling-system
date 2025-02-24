@@ -1,32 +1,25 @@
-    import connect from "@/lib/data";
-    import { NextApiRequest, NextApiResponse } from "next";
-    import CallLog from "../../../models/callLog";
-    export  async function POST(request: NextApiRequest, Response: NextApiResponse) {
-        await connect();
-        if(!connect){
-            return Response.json({error:"connection failed"})
-        }
-        try{
-            console.log(request.body)
-            const callLog = await CallLog.create(request.body);
-            return Response.json({callLog})
-            }
-            catch(error){
-            return Response.json({error:error})
-            }
-        
-        }
+import connect from "@/lib/data";
+import CallLog from "../../../models/callLog";
+import { NextResponse } from "next/server";
 
-    export  async function GET( Response: NextApiResponse) {
-                await connect();
-                if(!connect){
-                    return Response.json({error:"connection failed"})
-                }
-                try{
-                    const callLog = await CallLog.find();
-                    return Response.json({callLog})
-                }
-                catch(error){
-                    return Response.json({error:error})
-                }
-            }           
+export async function POST(request: Request) {
+    await connect();
+    
+    try {
+        const body = await request.json();
+        const callLog = await CallLog.create(body);
+        return NextResponse.json({ callLog }, { status: 201 });
+    } catch (error) {
+        return NextResponse.json({ error: error }, { status: 400 });
+    }
+}
+
+export async function GET() {
+    await connect();
+    try {
+        const callLog = await CallLog.find();
+        return NextResponse.json({ callLog });
+    } catch (error) {
+        return NextResponse.json({ error: error });
+    }
+}

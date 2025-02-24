@@ -13,7 +13,7 @@ const callLogSchema = new mongoose.Schema({
   },
   comment: {
     type: String,
-    required: true,
+    required: false,
   },
     created: {
         type: Date,
@@ -22,25 +22,24 @@ const callLogSchema = new mongoose.Schema({
     },
     type:{
         type: String,
-        required: true,
+        required: false,
         enum: ['priceAsker', 'order', 'support'],
         default: 'priceAsker'
     },
     followUp:[{
         date:{
             type: Date,
-            required: true
+            required: false
         },
         info:{
             type: String,
-            required: true
+            required: false
         },
         time:{
             type: String,
-            required: true
+            required: false
         }
     }]
     
 });
-const CallLog = mongoose.model("CallLog", callLogSchema)|| mongoose.model("CallLog", callLogSchema);
-export default CallLog;
+export default mongoose.models.CallLog || mongoose.model("CallLog", callLogSchema);

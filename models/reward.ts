@@ -3,12 +3,12 @@ const rewardSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: false,
+    required: true,
   },
   customer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Customer",
-    required: false,
+    required: true,
   },
   startDate: {
     type: String,

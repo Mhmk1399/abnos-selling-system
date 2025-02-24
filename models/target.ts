@@ -1,10 +1,9 @@
 import mongoose from 'mongoose';
-import { start } from 'repl';
 const targetSchema = new mongoose.Schema({
     saler: { 
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        required: true,
+        required: false,
     },
     customer: {
         type: mongoose.Schema.Types.ObjectId,
