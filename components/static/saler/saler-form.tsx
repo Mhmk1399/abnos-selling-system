@@ -10,6 +10,7 @@ import { AiOutlineAim } from "react-icons/ai";
 import DefaultDashboard from "./default-saler";
 import { Costumers } from "@/components/costumers";
 import { AddCall } from "@/components/addCall";
+import { CallsList } from "@/components/callsList";
 
 const SalerForm = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -53,6 +54,8 @@ const SalerForm = () => {
         return null;
         case "transactions":
           return <AddCall />;
+          case "reports":
+            return <CallsList />;
       default:
         return <DefaultDashboard />;
     }

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Tab } from "@headlessui/react";
 import DatePicker from "react-multi-date-picker";
@@ -7,83 +7,107 @@ import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { FaUser, FaPhone, FaHistory, FaComments } from "react-icons/fa";
 
+interface Customer {
+  _id: string;
+  name: string;
+  phones: string[];
+  city?: string;
+  address?: string;
+  comment?: string;
+}
+
 const FileInput = () => {
   const [selectedTab, setSelectedTab] = useState(0);
-
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [formData, setFormData] = useState({
+    user: '',
+    customer: {
+        name: '',
+      phones: [] as string[],
+      _id: '',
+      comment: '',
+      city: '',
+      address: '',
+    },
+    comment: '',
+    type: 'priceAsker',
+    followUp: [{
+        date: '',
+        info: '',
+        time: ''
+    }]
+});
   const tabs = [
     { name: "اطلاعات شخصی", icon: <FaUser /> },
     { name: "لیست تماس", icon: <FaPhone /> },
     { name: "سابقه خرید", icon: <FaHistory /> },
     { name: "نظرات", icon: <FaComments /> },
   ];
+ useEffect(() => {
+        fetchCustomer();
+        const userId = localStorage.getItem('user');
+       
+    }, []);
 
-  const PersonalInfo = () => (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6"
-    >
-      <div className="space-y-4">
-        <div>
-          <label className="block text-gray-700 mb-2">نام و نام خانوادگی</label>
-          <input
-            type="text"
-            placeholder="نام و نام خانوادگی"
-            className="w-full p-3 border-2 text-black border-[#E8F4FE] rounded-xl focus:outline-none focus:border-[#6FBDF5] bg-[#F8FBFE] transition-all duration-300"
-          />
-        </div>
-
-        <div dir="rtl">
-          <label className="block text-gray-700 mb-2">شماره تماس</label>
-          <input
-            dir="rtl"
-            type="tel"
-            placeholder="شماره تماس"
-            className="w-full p-3 border-2 text-black border-[#E8F4FE] rounded-xl focus:outline-none focus:border-[#6FBDF5] bg-[#F8FBFE] transition-all duration-300"
-          />
-        </div>
-
-        <div>
-          <label className="block text-gray-700 mb-2">تاریخ تولد</label>
-          <DatePicker
-            calendar={persian}
-            locale={persian_fa}
-            className="w-full p-3 border-2 border-[#6FBDF5] shadow-md"
-            minDate={new Date(1921, 0, 1)}
-            maxDate={new Date()}
-          />
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        <div>
-          <label className="block text-gray-700 mb-2">آدرس</label>
-          <textarea
-            placeholder="آدرس"
-            className="w-full p-3 border-2 text-black border-[#E8F4FE] rounded-xl focus:outline-none focus:border-[#6FBDF5] bg-[#F8FBFE] transition-all duration-300 h-32"
-          />
-        </div>
-
-        <div>
-          <label className="block text-gray-700 mb-2">شهر</label>
-          <select className="w-full p-3 border-2 text-black border-[#E8F4FE] rounded-xl focus:outline-none focus:border-[#6FBDF5] bg-[#F8FBFE] transition-all duration-300">
-            <option>تهران</option>
-            <option>مشهد</option>
-            <option>اصفهان</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-gray-700 mb-2">کارشناس مربوطه</label>
-          <input
-            type="text"
-            className="w-full p-3 text-black border-2 border-[#E8F4FE] rounded-xl focus:outline-none focus:border-[#6FBDF5] bg-[#F8FBFE] transition-all duration-300"
-          />
-        </div>
-      </div>
-    </motion.div>
+    const fetchCustomer = async () => {
+        const response = await fetch('/api/customer');
+        const data = await response.json();
+        setCustomers(data.customer);
+    };
+    const filteredCustomers = customers.filter((customer: any) => 
+      customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      customer.phones.some((phone: string) => phone.includes(searchTerm)) ||
+      (customer.city && customer.city.toLowerCase().includes(searchTerm.toLowerCase()))
   );
+ 
+  const PersonalInfo = () => (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 w-full h-[50vh] overflow-y-auto">
+      <div className="space-y-2">
+        <label className="block text-gray-700">انتخاب مشتری</label>
+        <div className="relative">
+    <input
+        type="text"
+        placeholder="جستجوی مشتری..."
+        onBlur={(e) => setSearchTerm(e.target.value)}
+        className="w-full p-3 mb-2 border-2 border-[#E8F4FE] rounded-xl focus:outline-none focus:border-[#6FBDF5] bg-[#F8FBFE]"
+        autoComplete="off"
+    />
+    <select
+        value={formData.customer._id}
+        onChange={(e) => {
+            const selected = customers.find(c => c._id === e.target.value);
+            setFormData({ ...formData, customer: selected });
+        }}
+        className="w-full p-3 border-2 border-[#E8F4FE] rounded-xl focus:outline-none focus:border-[#6FBDF5] bg-[#F8FBFE]"
+    >
+        <option value="">انتخاب کنید</option>
+        {filteredCustomers.map((customer) => (
+            <option key={customer._id} value={customer._id}>
+                {`نام:${customer.name} | تلفن: ${customer.phones.join(', ')} | شهر: ${customer.city || '-'}`}
+            </option>
+        ))}
+    </select>
+</div>
+      </div>
 
+      {formData.customer._id && (
+        <div className="col-span-2 bg-[#F8FBFE] p-4 rounded-xl border-2 border-[#E8F4FE]">
+          <h3 className="text-lg font-bold mb-4">اطلاعات مشتری انتخاب شده</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <p className="text-gray-600">نام: {formData.customer.name}</p>
+              <p className="text-gray-600">تلفن: {formData.customer.phones?.join(', ')}</p>
+            </div>
+            <div>
+              <p className="text-gray-600">شهر: {formData.customer.city}</p>
+              <p className="text-gray-600">آدرس: {formData.customer.address}</p>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
   const CallsList = () => (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

@@ -1,7 +1,12 @@
 import { motion } from "framer-motion";
 import FileInput from "./file-input";
 
-const FileInputModal = ({ onClose }: { onClose: () => void }) => {
+interface FileInputModalProps {
+  onClose: () => void;
+}
+
+const FileInputModal = ({ onClose }: FileInputModalProps) => {
+  
   return (
     <motion.div
       initial={{ opacity: 0 }}

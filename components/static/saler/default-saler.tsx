@@ -17,6 +17,7 @@ import {
 import { AiFillStar, AiFillTrophy, AiOutlineTrophy } from "react-icons/ai";
 import FileInputModal from "../file-input-modal";
 
+  import FileInput from "../file-input";
 const DefaultDashboard = () => {
   // const [currentTime, setCurrentTime] = useState("");
   const [username, setUsername] = useState("کاربر گرامی");
@@ -26,11 +27,13 @@ const DefaultDashboard = () => {
   const [searchPhone, setSearchPhone] = useState("");
   const [searchOfficer, setSearchOfficer] = useState("");
   const [customers, setCustomers] = useState([]);
+  const [selectedCustomer, setSelectedCustomer] = useState('');
   const overlayRef = useRef(null);
   const [showFileInput, setShowFileInput] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     type: "",
+    _id: "",
   });
 
   const handleOverlayClick = (e: React.MouseEvent) => {
@@ -113,13 +116,15 @@ useEffect(() => {
     });
 
     if (response.ok) {
-      setFormData({
-        name: "",
-        type: "",
-      });
+    const  data = await response.json();
+    console.log("Customer created:", data);
+    
+      setSelectedCustomer(data.customer._id);
+      setFormData(data.customer);
     }
+   
   };
-
+  
   const rewards = [
     {
       title: "فروش برتر هفته",
@@ -137,7 +142,7 @@ useEffect(() => {
       icon: <AiFillStar size={24} className="text-blue-500" />,
     },
   ];
-
+  
   return (
     <>
       <motion.div
@@ -205,7 +210,10 @@ useEffect(() => {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {setIsModalOpen(true)
+              handleCustomerSelection(false)
+            }}
+
             className="flex items-center justify-center gap-2 bg-[#6FBDF5] text-white py-4 px-6 rounded-lg shadow-lg hover:bg-[#5CA8E0] transition-colors"
           >
             <BsTelephone size={20} />
@@ -234,7 +242,7 @@ useEffect(() => {
 
       {/* Modal  */}
 
-      {isModalOpen && (
+      {/* {isModalOpen && (
         <motion.div
           ref={overlayRef}
           onClick={handleOverlayClick}
@@ -279,17 +287,17 @@ useEffect(() => {
                 <Tab.Panel>
                   <div className="max-h-64 overflow-y-auto space-y-2">
                     <input
-                      onChange={(e) =>
-                        setFormData({ ...formData, name: e.target.value })
-                      }
+                      onChange={(e) => {
+                        setFormData({ ...formData, name: e.target.value });
+                      }}
                       type="text"
                       placeholder="نام مشتری..."
                       className="w-full p-3 pr-12 border-2 text-black border-[#E8F4FE] rounded-xl focus:outline-none focus:border-[#6FBDF5] bg-[#F8FBFE]"
                     />
                     <select
-                      onChange={(e) =>
-                        setFormData({ ...formData, type: e.target.value })
-                      }
+                      onChange={(e) => {
+                        setFormData({ ...formData, type: e.target.value });
+                      }}
                       className="w-full p-3 pr-12 border-2 text-black border-[#E8F4FE] rounded-xl focus:outline-none focus:border-[#6FBDF5] bg-[#F8FBFE]"
                     >
                       <option value="">انتخاب نوع مشتری</option>
@@ -329,7 +337,7 @@ useEffect(() => {
                     </button>
                   </div>
                 </Tab.Panel>
-              </Tab.Panels>
+              </Tab.Panels> */}
 
               {/* <div className="mt-6 flex justify-start gap-2">
                 <button
@@ -348,12 +356,14 @@ useEffect(() => {
                   ثبت تماس
                 </motion.button>
               </div> */}
-            </Tab.Group>
+            {/* </Tab.Group>
           </motion.div>
         </motion.div>
-      )}
+      )} */}
       {showFileInput && (
-        <FileInputModal onClose={() => setShowFileInput(false)} />
+          <FileInputModal
+            onClose={() => setShowFileInput(false)}
+            />
       )}
     </>
   );
