@@ -2,6 +2,7 @@
 import DynamicTable from "@/components/global/tables";
 import IranMap from "./IranMap";
 import { useState } from "react";
+import StyledTable from "./conditionalDynamicTable";
 
 interface CityData {
   city: string;
@@ -12,20 +13,29 @@ interface CityData {
   corporate: number;
   agent: number;
   invoiceCount: number;
-  date?: string; // Added date property
+  date: string; // Added date property
 }
-
-interface ProductData {
-  id: number;
+interface CityData1 {
   name: string;
-  category: string;
-  price: number;
-  stock: number;
-  rating: number;
-  lastUpdate: string;
   sales: number;
   customers: number;
+  producta: number;
+  productb: number;
+  productc: number;
+
   invoiceCount: number;
+  date: string; // Added date property
+}
+interface StyleRule {
+  condition: (value: any) => boolean;
+  className: string;
+}
+interface Column {
+  key: string;
+  header: string;
+  sortable?: boolean;
+  render?: (value: any) => React.ReactNode;
+  styleRules?: StyleRule[];
 }
 
 const cityData: CityData[] = [
@@ -86,67 +96,58 @@ const cityData: CityData[] = [
   },
 ];
 
-const products: ProductData[] = [
+const cityData1: CityData1[] = [
   {
-    id: 1,
-    name: "لپ تاپ گیمینگ MSI",
-    category: "لپ تاپ",
-    price: 45000000,
-    stock: 15,
-    sales: 8,
-    rating: 4.5,
-    lastUpdate: "1402/10/15",
-    customers: 10,
-    invoiceCount: 8
+    name: "علی",
+    sales: 15930000,
+    customers: 650,
+
+    producta: 800,
+    productb: 300,
+    productc: 100,
+    invoiceCount: 200,
+    date: "2023-01-01", // Added sample date
   },
   {
-    id: 2,
-    name: "گوشی سامسونگ S23",
-    category: "موبایل",
-    price: 32000000,
-    stock: 25,
-    sales: 12,
-    rating: 4.8,
-    lastUpdate: "1402/10/18",
-    customers: 15,
-    invoiceCount: 12
+    name: "شرکت اخوان",
+    sales: 8000000,
+    customers: 650,
+    producta: 800,
+    productb: 300,
+    productc: 100,
+    invoiceCount: 120,
+    date: "2023-01-02", // Added sample date
   },
   {
-    id: 3,
-    name: "هدفون بی سیم Sony",
-    category: "صوتی",
-    price: 8500000,
-    stock: 40,
-    sales: 22,
-    rating: 4.3,
-    lastUpdate: "1402/10/12",
-    customers: 20,
-    invoiceCount: 22
+    name: "مهدی",
+    sales: 600000,
+    customers: 480,
+    producta: 800,
+    productb: 300,
+    productc: 100,
+    invoiceCount: 90,
+    date: "2023-01-03", // Added sample date
   },
   {
-    id: 4,
-    name: "تبلت اپل iPad Pro",
-    category: "تبلت",
-    price: 28000000,
-    stock: 18,
-    sales: 7,
-    rating: 4.9,
-    lastUpdate: "1402/10/20",
-    customers: 8,
-    invoiceCount: 7
+    name: "محمد",
+    sales: 900000,
+    customers: 750,
+    producta: 800,
+    productb: 300,
+    productc: 100,
+    invoiceCount: 150,
+    date: "2023-01-04", // Added sample date
   },
   {
-    id: 5,
-    name: "ساعت هوشمند Garmin",
-    category: "پوشیدنی",
-    price: 12000000,
-    stock: 30,
-    sales: 15,
-    rating: 4.6,
-    lastUpdate: "1402/10/14",
-    customers: 18,
-    invoiceCount: 15
-  }
+    name: "نماینده شرق",
+    sales: 700000,
+    customers: 520,
+    producta:325,
+    productb:234,
+    productc:22,
+    invoiceCount: 110,
+    date: "2023-01-05", // Added sample date
+  },
 ];
 
 export default function MainCostumer() {
@@ -185,6 +186,52 @@ export default function MainCostumer() {
       sortable: true,
     },
   ];
+  const salesColumns: Column[] = [
+    {
+      key: "name",
+      header: "مشتریان",
+      sortable: true,
+    },
+    {
+      key: "sales",
+      header: "میزان فروش",
+      sortable: true,
+      styleRules: [
+        {
+          condition: (value) => value < 700000,
+          className: "text-red-600 bg-red-50",
+        },
+        {
+          condition: (value) => value >= 700000 && value <= 900000,
+          className: "text-yellow-600 bg-yellow-50",
+        },
+        {
+          condition: (value) => value > 900000,
+          className: "text-green-600 bg-green-50",
+        },
+      ],
+      render: (value) => value.toLocaleString("fa-IR"),
+    },
+
+    {
+      key: "invoiceCount",
+      header: "تعداد فاکتور",
+      styleRules: [
+        {
+          condition: (value) => value < 100,
+          className: "text-red-600 bg-red-50",
+        },
+        {
+          condition: (value) => value >= 100 && value <= 150,
+          className: "text-yellow-600 bg-yellow-50",
+        },
+        {
+          condition: (value) => value > 150,
+          className: "text-green-600 bg-green-50",
+        },
+      ],
+    },
+  ];
 
   const handleCitySelect = (city: string) => {
     setSelectedCity(city);
@@ -192,15 +239,15 @@ export default function MainCostumer() {
   };
 
   return (
-    <div className="flex flex-col gap-4 p-3 md:p-6 animate-fadeIn">
-      <h1 className="text-xl md:text-2xl font-bold text-gray-800 hover:text-gray-900 transition-colors">
+    <div className="flex flex-col gap-4   sm:m-0 md:p-6 animate-fadeIn">
+      <h1 className="text-xl justify-center text-center lg:mb-8 sm:m-16 md:text-2xl font-bold text-gray-800 hover:text-gray-900 transition-colors">
         نقشه فروش کشوری
       </h1>
-      <div className="flex flex-col lg:flex-row gap-4 md:gap-6">
-        <div className="w-full lg:w-1/2 bg-white rounded-xl transform hover:scale-[1.02] transition-transform duration-300">
+      <div className="flex flex-col justify-center mx-auto gap-4 ">
+        <div className="w-full justify-center mx-auto  rounded-xl transform hover:scale-[1.02] transition-transform duration-300">
           <IranMap data={cityData} onCitySelect={handleCitySelect} />
         </div>
-        <div className="w-full lg:w-1/2 bg-white rounded-xl p-2 md:p-4 transform hover:scale-[1.02] transition-transform duration-300">
+        <div className="w-full bg-transparent rounded-xl p-2 md:p-4 transform hover:scale-[1.02] transition-transform duration-300">
           <h2 className="text-lg md:text-xl font-semibold mb-2 md:mb-4 text-gray-800 text-center">
             اطلاعات فروش شهرها
           </h2>
@@ -211,14 +258,16 @@ export default function MainCostumer() {
               onSort={(key, direction) => console.log("Sort:", key, direction)}
               onFilter={(filters) => console.log("Filters:", filters)}
             />
-            <DynamicTable
-              columns={columns}
-              data={products}
-              onSort={(key, direction) => console.log("Sort:", key, direction)}
-              onFilter={(filters) => console.log("Filters:", filters)}
-            />
           </div>
         </div>
+      </div>
+
+      {/* New full-width section for StyledTable */}
+      <div className="w-full bg-white justify-center  rounded-xl p-2 md:p-4 transform hover:scale-[1.02] transition-transform duration-300">
+        <h2 className="text-lg md:text-xl font-semibold mb-2 md:mb-4 text-gray-800 text-center justify-center">
+          جدول فروش با فیلتر زمانی
+        </h2>
+        <StyledTable columns={salesColumns} data={cityData1} />
       </div>
     </div>
   );
