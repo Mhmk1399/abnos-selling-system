@@ -17,9 +17,7 @@ import DefinitionReward from "../definition-reward";
 const SupervisorForm = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeComponent, setActiveComponent] = useState("");
-  const [closedWidth, setClosedWidth] = useState(
-    window?.innerWidth >= 1024 ? "50px" : "0px"
-  );
+  const [closedWidth, setClosedWidth] = useState("50px");
 
   const menuItems = [
     { id: "dashboard", icon: <MdDashboard size={23} />, title: "داشبورد" },
@@ -63,13 +61,16 @@ const SupervisorForm = () => {
   }, [activeComponent]);
 
   useEffect(() => {
+    // Move window check inside useEffect which only runs client-side
+    setClosedWidth(window.innerWidth >= 1024 ? "50px" : "0px");
+
     const handleResize = () => {
-      setClosedWidth(window.innerWidth > 1024 ? "50px" : "50px");
+      setClosedWidth(window.innerWidth >= 1024 ? "50px" : "0px");
     };
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [window.innerWidth]);
+  }, []);
 
   return (
     <div className="flex" dir="rtl">
@@ -107,7 +108,7 @@ const SupervisorForm = () => {
 
               {/* Custom Tooltip */}
               {!isOpen && (
-                <div className="absolute hidden md:block right-[60px] bg-[#6FBDF5] px-3 py-2 rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 whitespace-nowrap z-50 before:content-[''] before:absolute before:top-[50%] before:right-[-5px] before:translate-y-[-50%] before:border-[6px] before:border-transparent before:border-l-[#6FBDF5]">
+                <div className="absolute right-[60px] hidden md:block bg-[#6FBDF5] px-3 py-2 rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 whitespace-nowrap z-50 before:content-[''] before:absolute before:top-[50%] before:right-[-5px] before:translate-y-[-50%] before:border-[6px] before:border-transparent before:border-l-[#6FBDF5]">
                   {item.title}
                 </div>
               )}

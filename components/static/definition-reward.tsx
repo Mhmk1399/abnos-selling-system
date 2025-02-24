@@ -50,7 +50,7 @@ const DefinitionReward = () => {
         method: "POST",
         body: JSON.stringify({
           ...currentReward,
-          customer:"",
+          customer: "",
           supervisor: "67badd17741200a6b19590af",
           startDate: currentReward.startDate.toString(),
           endDate: currentReward.endDate.toString(),

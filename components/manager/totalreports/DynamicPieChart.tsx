@@ -1,5 +1,4 @@
 import { Pie } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip } from "chart.js";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
