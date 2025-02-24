@@ -25,6 +25,7 @@ const DefaultDashboard = () => {
   const [searchName, setSearchName] = useState("");
   const [searchPhone, setSearchPhone] = useState("");
   const [searchOfficer, setSearchOfficer] = useState("");
+  const [customers, setCustomers] = useState([]);
   const overlayRef = useRef(null);
   const [showFileInput, setShowFileInput] = useState(false);
   const [formData, setFormData] = useState({
@@ -55,6 +56,15 @@ const DefaultDashboard = () => {
       setShowFileInput(true);
     }
   };
+  const fetchCustomer = async () => {
+    const response = await fetch('/api/customer');
+    const data = await response.json();
+    setCustomers(data.customer);
+};  
+useEffect(() => {
+  fetchCustomer();
+  }, []);
+
   // useEffect(() => {
   //   // Set initial time
   //   setCurrentTime(moment().format("HH:mm:ss"));
@@ -304,35 +314,12 @@ const DefaultDashboard = () => {
                     <div className="relative">
                       <input
                         type="text"
-                        placeholder="جستجوی نام مشتری..."
+                        placeholder="جستجو ..."
                         value={searchName}
                         onChange={(e) => setSearchName(e.target.value)}
                         className="w-full p-3 pr-12 border-2 text-black border-[#E8F4FE] rounded-xl focus:outline-none focus:border-[#6FBDF5] bg-[#F8FBFE]"
                       />
                       <BiSearch className="absolute top-1/2 right-4 -translate-y-1/2 text-[#6FBDF5] text-xl" />
-                    </div>
-
-                    <div className="relative">
-                      <input
-                        dir="rtl"
-                        type="tel"
-                        placeholder="جستجوی شماره تماس..."
-                        value={searchPhone}
-                        onChange={(e) => setSearchPhone(e.target.value)}
-                        className="w-full p-3 pr-12 border-2 text-black border-[#E8F4FE] rounded-xl focus:outline-none focus:border-[#6FBDF5] bg-[#F8FBFE]"
-                      />
-                      <BsTelephone className="absolute top-1/2 right-4 -translate-y-1/2 text-[#6FBDF5] text-xl" />
-                    </div>
-
-                    <div className="relative">
-                      <input
-                        type="text"
-                        placeholder="جستجوی نام کارمند..."
-                        value={searchOfficer}
-                        onChange={(e) => setSearchOfficer(e.target.value)}
-                        className="w-full p-3 pr-12 border-2 text-black border-[#E8F4FE] rounded-xl focus:outline-none focus:border-[#6FBDF5] bg-[#F8FBFE]"
-                      />
-                      <FaUser className="absolute top-1/2 right-4 -translate-y-1/2 text-[#6FBDF5] text-xl" />
                     </div>
                     <button
                       onClick={() => handleCustomerSelection(false)}

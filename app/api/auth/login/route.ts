@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
             );
 
         console.log('Login successful');
-        return NextResponse.json({ token });
+        return NextResponse.json({ token, userId: user._id });
     }
     catch (error) {
         console.error('Login error:', error);
