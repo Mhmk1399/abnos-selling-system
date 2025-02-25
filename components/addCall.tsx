@@ -76,7 +76,7 @@ export const AddCall = () => {
                 <h2 className="text-2xl font-bold text-[#6FBDF5] mb-6">ثبت تماس جدید</h2>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="space-y-2">
+                    {/* <div className="space-y-2">
                         <label className="block text-gray-700">انتخاب مشتری</label>
                         <div className="relative">
                             <input
@@ -102,7 +102,7 @@ export const AddCall = () => {
                                 ))}
                             </select>
                         </div>
-                    </div>
+                    </div> */}
 
                     <div className="space-y-2">
                         <label className="block text-gray-700">نوع تماس</label>

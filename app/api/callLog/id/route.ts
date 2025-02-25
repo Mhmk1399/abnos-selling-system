@@ -6,24 +6,12 @@
         if(!connect){
             return NextResponse.json({error:"connection failed"})
         }
-        const customerId = request.headers.get("customer");
-        if(!customerId){
+        const id = request.headers.get("id");
+        if(!id){
             return NextResponse.json({error:"header not found"})
         }
         try{
-            const callLog = await CallLog.find({customer:customerId}).populate(
-                {
-                    path: 'user',
-                    model: 'User',
-                    select: 'name phoneNumber role',
-                }
-            ).populate(
-                {
-                    path: 'customer',
-                    model: 'Customers',
-                    select: 'name phones type city comments',
-                }
-            );
+            const callLog = await CallLog.findByIdAndDelete(id)
             return NextResponse.json({callLog})
         }
         catch(error){
