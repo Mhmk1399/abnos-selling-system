@@ -52,33 +52,24 @@ const RowModal: React.FC<ModalProps> = ({ isOpen, onClose, data }) => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="relative bg-white rounded-xl shadow-2xl w-11/12 max-w-2xl mx-auto p-6 max-h-[90vh] overflow-y-auto"
+            className="relative bg-white rounded-xl shadow-2xl w-11/12 max-w-2xl mx-auto p-6"
           >
-            <div className="sticky top-0 bg-white pb-4 border-b border-gray-100">
-              <div className="flex justify-between items-center">
-                <h3 className="text-xl font-bold text-[#6FBDF5]">
-                  جزئیات اطلاعات
-                </h3>
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={onClose}
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                >
-                  <IoClose size={24} className="text-gray-500 " />
-                </motion.button>
-              </div>
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold text-[#6FBDF5]">جزئیات اطلاعات</h3>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={onClose}
+                className="p-2 hover:bg-gray-100 rounded-full"
+              >
+                <IoClose size={24} className="text-gray-500" />
+              </motion.button>
             </div>
-
-            <div className="mt-4 space-y-4">
+            <div className="space-y-4">
               {Object.entries(data).map(([key, value]) => (
-                <div
-                  key={key}
-                  className="flex border-b  justify-between items-center p-3 hover:bg-gray-50 rounded-lg"
-                >
+                <div key={key} className="flex justify-between items-center p-3 hover:bg-gray-50 rounded-lg">
                   <span className="font-medium text-gray-700">{key}</span>
-                  <span className="text-gray-900">{value}</span>
+                  <span className="text-gray-900">{typeof value === 'object' ? JSON.stringify(value) : String(value)}</span>
                 </div>
               ))}
             </div>
@@ -88,6 +79,7 @@ const RowModal: React.FC<ModalProps> = ({ isOpen, onClose, data }) => {
     </AnimatePresence>
   );
 };
+
 const CustomInput: React.FC<DatePickerInputProps> = ({
   value,
   openCalendar,
