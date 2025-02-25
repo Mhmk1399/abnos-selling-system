@@ -8,27 +8,29 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import { FaUser, FaPhone, FaHistory, FaComments } from "react-icons/fa";
 
 interface Customer {
-  _id: string;
-  name: string;
-  phones: string[];
+  _id?: string;
+  name?: string;
+  phones?: string[];
   city?: string;
   address?: string;
   comment?: string;
+  
 }
 
 const FileInput = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [customers, setCustomers] = useState<Customer[]>([]);
+  const [calls, setCalls] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [formData, setFormData] = useState({
     user: '',
     customer: {
-        name: '',
-      phones: [] as string[],
-      _id: '',
-      comment: '',
-      city: '',
-      address: '',
+        name: '' as string,
+      phones: ["",""] as string[],
+      _id: '' as string,
+      comment: '' as string,
+      city: '' as string,
+      address: '' as string,
     },
     comment: '',
     type: 'priceAsker',
@@ -49,6 +51,27 @@ const FileInput = () => {
         const userId = localStorage.getItem('user');
        
     }, []);
+  useEffect(() => {
+    // Fetch salers, customers and products data
+    const fetchInitialData = async () => {
+      try {
+        const customer = formData.customer._id;
+
+        const headers = {
+          "Content-Type": "application/json",
+          customer: customer,
+        };
+
+        const response = await fetch("/api/callLog/customerId", { headers });
+        const data = await response.json();
+        setCalls(data.callLog);
+      } catch (error) {
+        console.error("Error fetching customers:", error);
+      }
+    };
+    fetchInitialData();
+  } , [formData]);
+
 
     const fetchCustomer = async () => {
         const response = await fetch('/api/customer');
@@ -77,14 +100,28 @@ const FileInput = () => {
         value={formData.customer._id}
         onChange={(e) => {
             const selected = customers.find(c => c._id === e.target.value);
-            setFormData({ ...formData, customer: selected });
+            if (selected) {
+                setFormData({
+                    ...formData,
+                    customer: {
+                        name: selected.name || '',
+                        phones: selected.phones || ["", ""],
+                        _id: selected._id || '',
+                        comment: selected.comment || '',
+                        city: selected.city || '',
+                        address: selected.address || ''
+                    }
+                });
+                console.log(selected);
+                
+            }
         }}
         className="w-full p-3 border-2 border-[#E8F4FE] rounded-xl focus:outline-none focus:border-[#6FBDF5] bg-[#F8FBFE]"
     >
         <option value="">انتخاب کنید</option>
         {filteredCustomers.map((customer) => (
-            <option key={customer._id} value={customer._id}>
-                {`نام:${customer.name} | تلفن: ${customer.phones.join(', ')} | شهر: ${customer.city || '-'}`}
+            <option key={customer._id} value={customer._id} >
+                {`نام:${customer.name} | تلفن: ${customer?.phones?.join(', ')} | شهر: ${customer.city || '-'}`}
             </option>
         ))}
     </select>
@@ -102,6 +139,9 @@ const FileInput = () => {
             <div>
               <p className="text-gray-600">شهر: {formData.customer.city}</p>
               <p className="text-gray-600">آدرس: {formData.customer.address}</p>
+            </div>
+            <div>
+              <p className="text-gray-600">نظرات: {formData.customer.comment}</p>
             </div>
           </div>
         </div>

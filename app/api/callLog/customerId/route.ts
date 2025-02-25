@@ -1,21 +1,27 @@
     import connect from "@/lib/data";
     import { NextResponse,NextRequest } from "next/server";
     import CallLog from "@/models/callLog";
-    export async function GET(request: Request,response: NextResponse) {
+    export async function GET(request: Request) {
         await connect();
         if(!connect){
             return NextResponse.json({error:"connection failed"})
         }
-        const id = request.headers.get("id");
-        if(!id){
+        const customerId = request.headers.get("customer");
+        if(!customerId){
             return NextResponse.json({error:"header not found"})
         }
         try{
-            const callLog = await CallLog.findById(id);
-            return Response.json({callLog})
+            const callLog = await CallLog.find({customer:customerId}).populate(
+                {
+                    path: 'user',
+                    
+                    select: 'name phoneNumber role',
+                }
+            );
+            return NextResponse.json({callLog})
         }
         catch(error){
-            return Response.json({error:error})
+            return NextResponse.json({error:error})
         }
     }
     export async function PATCH(request: NextRequest) {
