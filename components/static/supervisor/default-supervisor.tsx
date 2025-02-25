@@ -252,6 +252,12 @@ const DefaultSupervisor: React.FC = () => {
           </div>
         </div>
       </motion.div>
+      <button
+        onClick={() => (window.location.href = "/")}
+        className="absolute left-4 top-[100px] py-1 px-4 inline-block text-white font-bold rounded-md bg-yellow-500 hover:text-red-50 transition-colors"
+      >
+        ← بازگشت به صفحه اصلی
+      </button>
 
       {/* Chart Section */}
       <div className="mt-32  mb-8">

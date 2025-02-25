@@ -50,6 +50,12 @@ export default function Manager() {
       <h1 className="text-2xl text-center font-bold text-gray-800 mb-6">
         داشبورد مدیریت
       </h1>
+      <button
+        onClick={() => (window.location.href = "/")}
+        className="absolute left-4 top-[100px] py-1 px-4 inline-block text-white font-bold rounded-md bg-yellow-500 hover:text-red-50 transition-colors"
+      >
+        ← بازگشت به صفحه اصلی
+      </button>
       <div className="rounded-lg p-2 shadow-sm">
         <nav className="flex items-center justify-center gap-2 md:gap-8">
           {navItems.map((item) => (

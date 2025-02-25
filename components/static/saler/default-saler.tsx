@@ -56,10 +56,10 @@ const TargetDisplay = ({ target }: { target: Target }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white rounded-xl p-6 shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-700 mb-4">
+          <h3 className="text-lg text-center font-semibold text-[#6FBDF5] mb-4">
             اطلاعات مشتری
           </h3>
-          <div className="flex flex-row gap-8 justify-center items-center">
+          <div className="flex flex-col lg:flex-row gap-8 justify-center items-center">
             <div className="flex justify-between items-center gap-2">
               <span className="text-gray-600">نام:</span>
               <span className="font-medium text-black">
@@ -82,10 +82,10 @@ const TargetDisplay = ({ target }: { target: Target }) => {
         </div>
 
         <div className="bg-white rounded-xl p-6 shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-700 mb-4">
-            جزئیات هدف
+        <h3 className="text-lg text-center font-semibold text-[#6FBDF5] mb-4">
+        جزئیات هدف
           </h3>
-          <div className="flex flex-row gap-8 justify-center items-center">
+          <div className="flex flex-col lg:flex-row gap-8 justify-center items-center">
             <div className="flex justify-between items-center gap-2">
               <span className="text-gray-600">مقدار:</span>
               <span className="font-medium text-black">
@@ -116,13 +116,8 @@ const DefaultDashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [customers, setCustomers] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState("");
-  const overlayRef = useRef(null);
   const [showFileInput, setShowFileInput] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    type: "",
-    _id: "",
-  });
+  
   const [currentTarget, setCurrentTarget] = useState<Target[]>([]);
 
  
@@ -169,21 +164,21 @@ const DefaultDashboard = () => {
     fetchUsername();
   }, []);
 
-  const handleSubmit = async () => {
-    const response = await fetch("/api/customer", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
+  // const handleSubmit = async () => {
+  //   const response = await fetch("/api/customer", {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify(formData),
+  //   });
 
-    if (response.ok) {
-      const data = await response.json();
-      console.log("Customer created:", data);
+  //   if (response.ok) {
+  //     const data = await response.json();
+  //     console.log("Customer created:", data);
 
-      setSelectedCustomer(data.customer._id);
-      setFormData(data.customer);
-    }
-  };
+  //     setSelectedCustomer(data.customer._id);
+  //     setFormData(data.customer);
+  //   }
+  // };
 
   const fetchTargets = async () => {
     try {
@@ -234,7 +229,7 @@ const DefaultDashboard = () => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="p-6 min-h-screen mr-16"
+        className="p-6 min-h-screen mr-0 md:mr-12"
         dir="rtl"
       >
         {/* Date and Time Header */}
@@ -257,12 +252,18 @@ const DefaultDashboard = () => {
             </div>
           </div>
         </motion.div>
+        <button
+        onClick={() => window.location.href = '/'}
+        className="absolute left-4 top-[100px] py-1 px-4 inline-block text-white font-bold rounded-md bg-yellow-500 hover:text-red-50 transition-colors"
+      >
+        ← بازگشت به صفحه اصلی
+      </button>
 
         {/* Rewards Section */}
         <motion.div
           initial={{ y: 20 }}
           animate={{ y: 0 }}
-          className="grid grid-cols-1 mt-32 md:grid-cols-3 gap-6 mb-8"
+          className="grid grid-cols-1 justify-center items-center mt-32 md:grid-cols-3 gap-6 mb-8"
         >
           {rewards.map((reward, index) => (
             <motion.div

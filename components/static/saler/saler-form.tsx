@@ -54,11 +54,11 @@ const SalerForm = () => {
         return <SalerTargets />;
       case "settings":
         return null;
-        case "transactions":
-          return <AddCall />;
-          case "reports":
-            return <CallsList />;
-    
+      case "transactions":
+        return <AddCall />;
+      case "reports":
+        return <CallsList />;
+
       default:
         return <DefaultDashboard />;
     }
@@ -100,7 +100,7 @@ const SalerForm = () => {
               onClick={() => setActiveComponent(item.id)}
               transition={{ duration: 0.2 }}
             >
-              <div>{item.icon}</div>
+              <div className="peer">{item.icon}</div>
               <motion.span
                 animate={isOpen ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
                 className="mr-4 whitespace-nowrap"
@@ -110,7 +110,7 @@ const SalerForm = () => {
 
               {/* Custom Tooltip */}
               {!isOpen && (
-                <div className="absolute right-[60px] hidden md:block bg-[#6FBDF5] px-3 py-2 rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 whitespace-nowrap z-50 before:content-[''] before:absolute before:top-[50%] before:right-[-5px] before:translate-y-[-50%] before:border-[6px] before:border-transparent before:border-l-[#6FBDF5]">
+                <div className="absolute right-[60px] hidden md:block bg-[#6FBDF5] px-3 py-2 rounded-md opacity-0 invisible peer-hover:opacity-100 peer-hover:visible transition-all duration-300 whitespace-nowrap z-50 before:content-[''] before:absolute before:top-[50%] before:right-[-5px] before:translate-y-[-50%] before:border-[6px] before:border-transparent before:border-l-[#6FBDF5]">
                   {item.title}
                 </div>
               )}
