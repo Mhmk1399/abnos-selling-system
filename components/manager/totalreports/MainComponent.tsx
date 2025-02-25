@@ -3,7 +3,6 @@ import DynamicLineChart from "./DynamicLineChart";
 import DynamicPieChart from "./DynamicPieChart";
 import MetricsTable from "./MetricsTable";
 import DynamicBarChart from "./DynamicBarChart";
-import { useState } from "react";
 
 import {
   Chart as ChartJS,
@@ -98,7 +97,7 @@ const CallDistributionDashboard = () => {
 
   return (
     <div
-      className="min-h-screen bg-gradient-to-r from-blue-100 to-blue-50 p-8"
+      className="min-h-screen bg-gradient-to-r from-blue-100 to-blue-50 w-full p-8"
       dir="rtl"
     >
       <div className="max-w-7xl mx-auto space-y-6">

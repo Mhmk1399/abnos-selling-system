@@ -22,6 +22,7 @@ interface ModalProps {
 interface TableData {
   date: string; // or Date
   [key: string]: any;
+ 
 }
 interface DatePickerInputProps {
   value?: DateObject[];

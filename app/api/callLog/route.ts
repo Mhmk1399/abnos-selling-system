@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
     await connect();
-    
+
     try {
         const body = await request.json();
         const callLog = await CallLog.create(body);
@@ -17,7 +17,17 @@ export async function POST(request: Request) {
 export async function GET() {
     await connect();
     try {
-        const callLog = await CallLog.find();
+        const callLog = await CallLog.find()
+            .populate({
+                path: 'user',
+                model: 'User',
+                select: 'name phoneNumber role'
+            })
+            .populate({
+                path: 'customer',
+                model: 'Customers',
+                select: 'name phones type city'
+            });
         return NextResponse.json({ callLog });
     } catch (error) {
         return NextResponse.json({ error: error });
