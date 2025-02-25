@@ -128,7 +128,7 @@ const SalerActivityBox = () => {
 
   // New sample data for calls per hour by salesperson
   const callsPerHourBySalespersonData = {
-    title: "Calls per Hour by Salesperson",
+    title: "نمودار فروش براساس فروشنده",
     datasets: [
       {
         label: "John Doe",

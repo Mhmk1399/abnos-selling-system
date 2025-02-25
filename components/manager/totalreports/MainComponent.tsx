@@ -93,6 +93,9 @@ const CallDistributionDashboard = () => {
         
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="col-span-1 lg:col-span-2">
+            <MetricsTable metrics={metrics} />
+          </div>
           <DynamicPieChart
             title="نحوه تقسیم تماس  ها براساس تاریخ"
             data={pieChartConfig}
@@ -103,9 +106,6 @@ const CallDistributionDashboard = () => {
             target={13000000}
             type="products"
           />
-          <div className="col-span-1 lg:col-span-2">
-            <MetricsTable metrics={metrics} />
-          </div>
 
           <DynamicBarChart
             title="عملکرد فروشندگان"

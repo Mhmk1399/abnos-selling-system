@@ -82,10 +82,10 @@ export default function Home() {
   // ];
   return (
     <div className="">
-      {/* <SalerForm /> */}
+      <SalerForm />
       {/* <FileInput /> */}
       {/* <SupervisorForm /> */}
-      <RoleChanger />
+      {/* <RoleChanger /> */}
       {/* <DynamicTable
 
         columns={columns}

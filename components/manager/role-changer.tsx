@@ -4,6 +4,19 @@ import Select from "react-select";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FiSearch, FiUser, FiPhone, FiCalendar } from "react-icons/fi";
+import { CSSObjectWithLabel } from "react-select";
+import { ControlProps, OptionProps } from "react-select";
+
+interface SelectStyles {
+  control: (
+    base: CSSObjectWithLabel,
+    state: ControlProps<RoleOption, false>
+  ) => CSSObjectWithLabel;
+  option: (
+    base: CSSObjectWithLabel,
+    state: OptionProps<RoleOption, false>
+  ) => CSSObjectWithLabel;
+}
 interface User {
   _id: string;
   name: string;
@@ -26,8 +39,8 @@ const RoleChanger: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [pendingChanges, setPendingChanges] = useState<PendingChange[]>([]);
 
-  const customSelectStyles = {
-    control: (base: any) => ({
+  const customSelectStyles: SelectStyles = {
+    control: (base) => ({
       ...base,
       backgroundColor: "white",
       borderColor: "#E2E8F0",
@@ -38,7 +51,7 @@ const RoleChanger: React.FC = () => {
         borderColor: "#CBD5E0",
       },
     }),
-    option: (base: any, state: any) => ({
+    option: (base, state) => ({
       ...base,
       backgroundColor: state.isSelected
         ? "#3B82F6"
@@ -127,7 +140,7 @@ const RoleChanger: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-6 lg:p-8" dir="rtl">
+    <div className="min-h-screen  p-4 md:p-6 lg:p-8" dir="rtl">
       <ToastContainer
         position="top-center"
         autoClose={3000}
@@ -146,7 +159,7 @@ const RoleChanger: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         className="max-w-7xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden"
       >
-        <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 md:p-8">
+        <div className="bg-[#5CA8E0] p-6 md:p-8">
           <h2 className="text-2xl md:text-3xl font-bold text-white">
             مدیریت نقش‌های کاربران
           </h2>

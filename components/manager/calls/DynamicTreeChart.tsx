@@ -34,8 +34,8 @@ const DynamicTreeChart: React.FC<TreeChartProps> = ({
 
   return (
     <div className="w-full min-h-[600px]  rounded-xl p-4 md:p-8  overflow-x-auto">
-      <h2 className="text-xl font-bold text-gray-800">{title}</h2>
-      <div className="flex justify-end mb-6">
+      <h2 className="text-xl font-bold text-center mb-2 text-gray-800">{title}</h2>
+      <div className="flex justify-center items-center mb-6">
         <select
           value={selectedRange}
           onChange={(e) => setSelectedRange(e.target.value)}

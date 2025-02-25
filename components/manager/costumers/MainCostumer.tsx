@@ -142,9 +142,9 @@ const cityData1: CityData1[] = [
     name: "نماینده شرق",
     sales: 700000,
     customers: 520,
-    producta:325,
-    productb:234,
-    productc:22,
+    producta: 325,
+    productb: 234,
+    productc: 22,
     invoiceCount: 110,
     date: "2023-01-05", // Added sample date
   },
@@ -239,16 +239,26 @@ export default function MainCostumer() {
   };
 
   return (
-    <div className="flex flex-col gap-4   sm:m-0 md:p-6 animate-fadeIn">
-      <h1 className="text-xl justify-center text-center lg:mb-8 sm:m-16 md:text-2xl font-bold text-gray-800 hover:text-gray-900 transition-colors">
+    <div className="flex flex-col gap-4 p-2 sm:p-4 md:p-6 lg:p-8">
+      <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-center text-gray-800 hover:text-gray-900 transition-colors mb-4 sm:mb-6 lg:mb-8">
         نقشه فروش کشوری
       </h1>
-      <div className="flex flex-col justify-center mx-auto gap-4 ">
-        <div className="w-full justify-center mx-auto  rounded-xl transform hover:scale-[1.02] transition-transform duration-300">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
+        <div className="w-full h-[300px] md:h-[400px] lg:h-[500px]  rounded-xl">
           <IranMap data={cityData} onCitySelect={handleCitySelect} />
         </div>
-        <div className="w-full bg-transparent rounded-xl p-2 md:p-4 transform hover:scale-[1.02] transition-transform duration-300">
-          <h2 className="text-lg md:text-xl font-semibold mb-2 md:mb-4 text-gray-800 text-center">
+        <div className="block md:hidden">
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        </div>
+        <div className="w-full bg-white rounded-xl p-3 md:p-4 lg:p-6 shadow-md">
+          <h2 className="text-base sm:text-lg lg:text-xl font-semibold  text-gray-800 text-center">
             اطلاعات فروش شهرها
           </h2>
           <div className="overflow-x-auto">
@@ -263,8 +273,8 @@ export default function MainCostumer() {
       </div>
 
       {/* New full-width section for StyledTable */}
-      <div className="w-full bg-white justify-center  rounded-xl p-2 md:p-4 transform hover:scale-[1.02] transition-transform duration-300">
-        <h2 className="text-lg md:text-xl font-semibold mb-2 md:mb-4 text-gray-800 text-center justify-center">
+      <div className="w-full bg-white rounded-xl p-3 sm:p-4 lg:p-6 shadow-md mt-4 lg:mt-8">
+        <h2 className="text-base sm:text-lg lg:text-xl font-semibold mb-3 sm:mb-4 text-gray-800 text-center">
           جدول فروش با فیلتر زمانی
         </h2>
         <StyledTable columns={salesColumns} data={cityData1} />

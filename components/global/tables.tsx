@@ -182,7 +182,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 " dir="rtl">
       {/* Filters */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-5 justify-center items-center gap-6 mb-8">
         {/* Search Input */}
         <div className="relative group">
           <input
