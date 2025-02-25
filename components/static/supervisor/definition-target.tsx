@@ -50,6 +50,7 @@ const DefinitionTarget = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [postedTargets, setPostedTargets] = useState<DisplayTarget[]>([]);
+  const [salersLoading, setSalersLoading] = useState(true);
 
   const [formData, setFormData] = useState<TargetFormData>({
     saler: [],
@@ -92,6 +93,7 @@ const DefinitionTarget = () => {
           Authorization: `Bearer ${token}`,
           id: userId || "",
         };
+        setSalersLoading(true);
 
         // Updated API endpoints to match your backend routes
         const [salersRes, customersRes] = await Promise.all([
@@ -118,10 +120,10 @@ const DefinitionTarget = () => {
 
         // Set state with validated data
         setSalers(salersData?.users || []);
-        console.log(salersData);
+        setSalersLoading(false);
+
 
         setCustomers(customersData?.customer || []);
-        console.log(customersData);
 
         setProducts(["Product 1", "Product 2"]); // Temporary static products until API is ready
       } catch (error) {
@@ -204,29 +206,35 @@ const DefinitionTarget = () => {
                 <span className="text-gray-700 font-bold">انتخاب همه</span>
               </label>
 
-              {salers.map((saler) => (
-                <label
-                  key={saler._id}
-                  className="flex items-center gap-2 cursor-pointer"
-                >
-                  <input
-                    type="checkbox"
-                    value={saler._id}
-                    checked={formData.saler.includes(saler._id)}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      setFormData((prev) => ({
-                        ...prev,
-                        saler: e.target.checked
-                          ? [...prev.saler, value]
-                          : prev.saler.filter((id) => id !== value),
-                      }));
-                    }}
-                    className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
-                  />
-                  <span className="text-gray-700">{saler.name}</span>
-                </label>
-              ))}
+              {salersLoading ? (
+                <div className="flex items-center justify-center p-4">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                </div>
+              ) : (
+                salers.map((saler) => (
+                  <label
+                    key={saler._id}
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      value={saler._id}
+                      checked={formData.saler.includes(saler._id)}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setFormData((prev) => ({
+                          ...prev,
+                          saler: e.target.checked
+                            ? [...prev.saler, value]
+                            : prev.saler.filter((id) => id !== value),
+                        }));
+                      }}
+                      className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                    />
+                    <span className="text-gray-700">{saler.name}</span>
+                  </label>
+                ))
+              )}
             </div>
 
             <div>

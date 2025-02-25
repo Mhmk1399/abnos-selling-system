@@ -6,31 +6,51 @@ import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { FaUser, FaPhone, FaHistory, FaComments } from "react-icons/fa";
+import callLog from "@/models/callLog";
+import moment from "moment-jalaali";
 
 interface Customer {
-  _id: string;
-  name: string;
-  phones: string[];
+  _id?: string;
+  name?: string;
+  phones?: string[];
   city?: string;
   address?: string;
-  comment?: string;
+  comments?: string[];
+
+}
+
+interface CallLog {
+  created: string;
+  type: string;
+  user: {
+    name: string;
+    _id: string;
+    phoneNumber?: string;
+    role?: string;
+  };
+  customer: {
+    _id: string;
+    name: string;
+    phones: string[];
+    city: string;}
 }
 
 const FileInput = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [customers, setCustomers] = useState<Customer[]>([]);
+  const [calls, setCalls] = useState<CallLog[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [formData, setFormData] = useState({
     user: '',
     customer: {
-        name: '',
-      phones: [] as string[],
-      _id: '',
-      comment: '',
-      city: '',
-      address: '',
+        name: '' as string,
+      phones: ["",""] as string[],
+      _id: '' as string,
+      comments: [] as string[],
+      city: '' as string,
+      address: '' as string,
     },
-    comment: '',
+    comments: []as string[],
     type: 'priceAsker',
     followUp: [{
         date: '',
@@ -49,6 +69,27 @@ const FileInput = () => {
         const userId = localStorage.getItem('user');
        
     }, []);
+  useEffect(() => {
+    // Fetch salers, customers and products data
+    const fetchInitialData = async () => {
+      try {
+        const customer = formData.customer._id;
+
+        const headers = {
+          "Content-Type": "application/json",
+          customer: customer,
+        };
+
+        const response = await fetch("/api/callLog/customerId", { headers });
+        const data = await response.json();
+        setCalls(data.callLog);
+      } catch (error) {
+        console.error("Error fetching customers:", error);
+      }
+    };
+    fetchInitialData();
+  } , [formData]);
+
 
     const fetchCustomer = async () => {
         const response = await fetch('/api/customer');
@@ -77,14 +118,28 @@ const FileInput = () => {
         value={formData.customer._id}
         onChange={(e) => {
             const selected = customers.find(c => c._id === e.target.value);
-            setFormData({ ...formData, customer: selected });
+            if (selected) {
+                setFormData({
+                    ...formData,
+                    customer: {
+                        name: selected.name || '',
+                        phones: selected.phones || ["", ""],
+                        _id: selected._id || '',
+                        comments: selected.comments || [''],
+                        city: selected.city || '',
+                        address: selected.address || ''
+                    }
+                });
+                console.log(selected);
+                
+            }
         }}
         className="w-full p-3 border-2 border-[#E8F4FE] rounded-xl focus:outline-none focus:border-[#6FBDF5] bg-[#F8FBFE]"
     >
         <option value="">انتخاب کنید</option>
         {filteredCustomers.map((customer) => (
-            <option key={customer._id} value={customer._id}>
-                {`نام:${customer.name} | تلفن: ${customer.phones.join(', ')} | شهر: ${customer.city || '-'}`}
+            <option key={customer._id} value={customer._id} >
+                {`نام:${customer.name} | تلفن: ${customer?.phones?.join(', ')} | شهر: ${customer.city || '-'}`}
             </option>
         ))}
     </select>
@@ -108,32 +163,47 @@ const FileInput = () => {
       )}
     </div>
   );
-  const CallsList = () => (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="overflow-x-auto"
-    >
-      <table className="min-w-full text-black bg-white rounded-xl overflow-hidden shadow-sm">
-        <thead className="bg-[#6FBDF5] text-white">
+  
+const CallsList = ({ calls }: { calls: CallLog[] }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    className="overflow-x-auto"
+  >
+    <table className="min-w-full text-black bg-white rounded-xl overflow-hidden shadow-sm">
+      <thead className="bg-[#6FBDF5] text-white">
+        <tr>
+          <th className="py-4 px-6 text-right font-medium">تاریخ</th>
+          <th className="py-4 px-6 text-right font-medium">موضوع</th>
+          <th className="py-4 px-6 text-right font-medium">کارشناس</th>
+          <th className="py-4 px-6 text-right font-medium">شهر</th>
+        </tr>
+      </thead>
+      <tbody>
+        {calls && calls.length > 0 ? (
+          calls.map((call, index) => (
+            <tr key={index} className="border-b hover:bg-[#F8FBFE] transition-colors">
+              <td className="py-4 px-6">
+                {moment(call.created).format('jYYYY/jMM/jDD ')}
+              </td>
+              <td className="py-4 px-6">{call.type==="order"?'سفارش ':call.type==="priceAsker"?'قیمت گیری':'پشتیبانی'}</td>
+              <td className="py-4 px-6">{call.user?.name}</td>
+              <td className="py-4 px-6">{call.customer?.city}</td>
+            </tr>
+          ))
+        ) : (
           <tr>
-            <th className="py-4 px-6 text-right font-medium">تاریخ</th>
-            <th className="py-4 px-6 text-right font-medium">موضوع</th>
-            <th className="py-4 px-6 text-right font-medium">نتیجه</th>
-            <th className="py-4 px-6 text-right font-medium">کارشناس</th>
+            <td colSpan={3} className="py-4 px-6 text-center text-gray-500">
+              هیچ تماسی ثبت نشده است
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          <tr className="border-b hover:bg-[#F8FBFE] transition-colors">
-            <td className="py-4 px-6">۱۴۰۲/۰۸/۱۵</td>
-            <td className="py-4 px-6">پیگیری سفارش</td>
-            <td className="py-4 px-6">موفق</td>
-            <td className="py-4 px-6">علی محمدی</td>
-          </tr>
-        </tbody>
-      </table>
-    </motion.div>
-  );
+        )}
+      </tbody>
+    </table>
+    <button> ثبت تماس جدید</button>
+  </motion.div>
+);
+  
 
   const PurchaseHistory = () => (
     <motion.div
@@ -159,40 +229,80 @@ const FileInput = () => {
     </motion.div>
   );
 
-  const Comments = () => (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="space-y-6"
-    >
-      <div className="bg-white p-4 rounded-lg shadow-sm">
-        <textarea
-          placeholder="نظر خود را وارد کنید..."
-          className="w-full p-3 text-black border-2 border-[#6FBDF5] rounded-lg focus:outline-none focus:border-[#5CA8E0] h-32"
-        />
-        <button className="mt-2 bg-[#6FBDF5] text-white px-4 py-2 rounded-lg hover:bg-[#5CA8E0] transition-colors">
-          ثبت نظر
-        </button>
-      </div>
-
-      {/* Previous comments */}
-      <div className="space-y-4">
-        {[1, 2].map((item) => (
-          <div
-            key={item}
-            className="bg-white p-4 rounded-lg shadow-sm border border-[#6FBDF5]/20"
+  const Comments = () => {
+    const [newComment, setNewComment] = useState("");
+  
+    const handleSubmitComment = async () => {
+      if (!newComment.trim()) return;
+  
+      try {
+        const updatedComments = [...(formData.customer.comments || []), newComment];
+        
+        const response = await fetch(`/api/customer/id`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'id': formData.customer._id
+          },
+          body: JSON.stringify({
+            comments: updatedComments
+          }),
+        });
+  
+        if (response.ok) {
+          setFormData({
+            ...formData,
+            customer: {
+              ...formData.customer,
+              comments: updatedComments
+            }
+          });
+          setNewComment("");
+        }
+      } catch (error) {
+        console.error("Error updating comments:", error);
+      }
+    };
+  
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="space-y-6"
+      >
+        <div className="bg-white p-4 rounded-lg shadow-sm">
+          <textarea
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            placeholder="نظر خود را وارد کنید..."
+            className="w-full p-3 text-black border-2 border-[#6FBDF5] rounded-lg focus:outline-none focus:border-[#5CA8E0] h-32"
+          />
+          <button 
+            onClick={handleSubmitComment}
+            className="mt-2 bg-[#6FBDF5] text-white px-4 py-2 rounded-lg hover:bg-[#5CA8E0] transition-colors"
           >
-            <div className="flex justify-between items-center mb-2">
-              <span className="font-bold text-black">کارشناس فروش</span>
-              <span className="text-[#6FBDF5] text-sm">۱۴۰۲/۰۸/۱۵</span>
+            ثبت نظر
+          </button>
+        </div>
+  
+        <div className="space-y-4">
+          {formData.customer?.comments?.map((comment, index) => (
+            <div
+              key={index}
+              className="bg-white p-4 rounded-lg shadow-sm border border-[#6FBDF5]/20"
+            >
+              <div className="flex justify-between items-center mb-2">
+                <span className="font-bold text-black">نظر {index + 1}</span>
+           
+              </div>
+              <p className="text-gray-700">{comment}</p>
             </div>
-            <p className="text-gray-700">نظر کاربر در مورد محصول یا خدمات</p>
-          </div>
-        ))}
-      </div>
-    </motion.div>
-  );
-
+          ))}
+        </div>
+      </motion.div>
+    );
+  };
+  
   return (
     <div className="p-6 bg-gradient-to-br from-gray-50 to-gray-100" dir="rtl">
       <Tab.Group onChange={setSelectedTab}>
@@ -227,7 +337,7 @@ const FileInput = () => {
               key="calls-list"
               className={selectedTab === 1 ? "block" : "hidden"}
             >
-              <CallsList />
+              <CallsList calls={calls} />
             </Tab.Panel>
             <Tab.Panel
               key="purchase-history"
