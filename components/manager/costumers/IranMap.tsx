@@ -1,6 +1,9 @@
 "use client";
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
+import { motion, AnimatePresence } from 'framer-motion';
+import DynamicLineChart from '../totalreports/DynamicLineChart';
+
 
 interface IranMapProps {
   data: Array<{
@@ -9,8 +12,62 @@ interface IranMapProps {
   }>;
   onCitySelect: (city: string) => void;
 }
+interface CityProductData {
+  productName: string;
+  data: number[];
+  color: string;
+}
+
+const productColors = {
+  'Product A': '#FF6B6B',
+  'Product B': '#4ECDC4',
+  'Product C': '#45B7D1',
+};
+
+const ChartModal = ({ isOpen, onClose, cityName, productData }: any) => (
+  <AnimatePresence>
+    {isOpen && (
+      <div className="fixed inset-0 flex items-center justify-center z-50">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="absolute inset-0 bg-black bg-opacity-50"
+          onClick={onClose}
+        />
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 50 }}
+          className="relative bg-white rounded-xl shadow-2xl w-11/12 max-w-4xl mx-auto p-6"
+        >
+          <h2 className="text-2xl font-bold mb-6 text-gray-800">
+            {`نمودار فروش محصولات در ${cityName}`}
+          </h2>
+          <DynamicLineChart
+            title="فروش محصولات"
+            datasets={Object.entries(productData).map(([product, data]: any) => ({
+              label: product,
+              data: data,
+              borderColor: productColors[product as keyof typeof productColors],
+            }))}
+          />
+        </motion.div>
+      </div>
+    )}
+  </AnimatePresence>
+);
+
 
 const IranMap = ({ data, onCitySelect }: IranMapProps) => {
+  const [selectedCity, setSelectedCity] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCityClick = (cityName: string) => {
+    setSelectedCity(cityName);
+    setIsModalOpen(true);
+    onCitySelect(cityName);
+  };
   const svgRef = useRef<SVGSVGElement | null>(null);
 
   useEffect(() => {
@@ -61,7 +118,9 @@ const IranMap = ({ data, onCitySelect }: IranMapProps) => {
           })
           .attr('stroke', '#000')
           .attr('stroke-width', 0.5)
-          .on('click', (event: any, d: any) => onCitySelect(d.properties.name))
+          .on('click', (event: any, d: any) => {
+            handleCityClick(d.properties.name);
+          })
           .append('title') // Tooltip
           .text((d: any) => {
             const cityData = data.find(item => item.city === d.properties.name);
@@ -92,13 +151,23 @@ const IranMap = ({ data, onCitySelect }: IranMapProps) => {
           .text(d => d.label)
           .attr('font-size', '12px');
       })
-      .catch(error => console.error('Error loading map:', error));
+      .catch((error: Error) => console.error('Error loading map:', error));
 
   }, [data, onCitySelect]);
 
   return (
-    <div className="border rounded-lg p-4 bg-white sm:p-8">
-      <svg ref={svgRef} width="100%" height="600" preserveAspectRatio="xMidYMid meet" />
+    <div className="border rounded-lg  bg-transparent ">
+      <svg ref={svgRef} width="100%" height="600" preserveAspectRatio="xMidYMid meet" className='w-full h-full ml-32 '></svg>
+      <ChartModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)} 
+        cityName={selectedCity}
+        productData={{
+          'Product A': [10, 20, 30, 40, 50, 60],
+          'Product B': [15, 25, 35, 45, 55, 65],
+          'Product C': [5, 15, 25, 35, 45, 55],
+        }}
+      />
     </div>
   );
 };
