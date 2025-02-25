@@ -75,18 +75,7 @@ const CallDistributionDashboard = () => {
       borderColor: "rgba(239, 68, 68, 0.8)",
     },
   ];
-  const productDatasets = [
-    {
-      label: "محصول A",
-      data: [40, 45, 50, 55, 50, 70],
-      borderColor: "rgba(147, 51, 234, 0.8)",
-    },
-    {
-      label: "محصول B",
-      data: [35, 40, 45, 50, 55, 55],
-      borderColor: "rgba(236, 72, 153, 0.8)",
-    },
-  ];
+
 
   const metrics = [
     { label: "تعداد کل تماس‌ها", value: "۱۵۰", trend: 12 },
