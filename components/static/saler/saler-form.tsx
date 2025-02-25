@@ -16,7 +16,8 @@ const SalerForm = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeComponent, setActiveComponent] = useState("");
   const [closedWidth, setClosedWidth] = useState("50px");
-
+  const [isMobile, setIsMobile] = useState(false);
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
   const menuItems = [
     { id: "dashboard", icon: <MdDashboard size={23} />, title: "داشبورد" },
     {
@@ -73,36 +74,71 @@ const SalerForm = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsLargeScreen(window.innerWidth >= 1024);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   return (
     <div className="flex" dir="rtl">
       <motion.div
         animate={{ width: isOpen ? "200px" : closedWidth }}
         className={`min-h-screen bg-[#6FBDF5] ${
           isOpen ? "backdrop-blur-sm bg-opacity-80" : ""
-        } z-[9999] text-white py-3 fixed `}
+        } z-[9999] text-white py-3 fixed ${
+          !isOpen && window.innerWidth < 1024 ? "pointer-events-none" : ""
+        }`}
       >
         <motion.div
           animate={isOpen ? { x: 0 } : { x: -10 }}
-          className="absolute cursor-pointer left-[-16px] top-3 w-8 h-8 bg-white rounded-full flex items-center justify-center"
+          className="absolute cursor-pointer left-[-20px] top-3 w-8 h-8 bg-white rounded-full flex items-center justify-center pointer-events-auto"
           onClick={() => setIsOpen(!isOpen)}
         >
           <HiMenuAlt3 size={20} color="#6FBDF5" />
         </motion.div>
 
-        <div className="mt-16">
+        <div className="mt-10">
           {menuItems.map((item) => (
             <motion.div
               key={item.id}
-              className={`flex items-center relative cursor-pointer hover:bg-white/10 py-3 px-3 group ${
+              className={`flex items-center relative cursor-pointer hover:bg-white/10 py-3 px-3 ${
                 activeComponent === item.id ? "bg-white/10" : ""
               }`}
               onClick={() => setActiveComponent(item.id)}
               transition={{ duration: 0.2 }}
             >
-              <div className="peer">{item.icon}</div>
               <motion.span
-                animate={isOpen ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
-                className="mr-4 whitespace-nowrap"
+                animate={
+                  isOpen
+                    ? { opacity: 1, display: "block" }
+                    : {
+                        opacity: isLargeScreen ? 1 : 0,
+                        display: isLargeScreen ? "block" : "none",
+                      }
+                }
+                className={`text-white peer`}
+              >
+                {item.icon}
+              </motion.span>
+
+              <motion.span
+                animate={
+                  isOpen
+                    ? { opacity: 1, display: "block" }
+                    : { opacity: 0, display: "none" }
+                }
+                className="mr-4 whitespace-break-spaces"
               >
                 {item.title}
               </motion.span>
