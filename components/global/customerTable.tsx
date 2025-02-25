@@ -7,6 +7,7 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import { BiSearch, BiSortAlt2 } from "react-icons/bi";
 import { IoClose } from "react-icons/io5"; // Add this import
 import { BsCalendarRange } from "react-icons/bs";
+import FileInput from "../static/file-input";
 
 interface TableColumn {
   key: string;
@@ -36,11 +37,14 @@ interface DynamicTableProps {
   onSort?: (key: string, direction: "asc" | "desc") => void;
   onFilter?: (filters: any) => void;
 }
+
 const RowModal: React.FC<ModalProps> = ({ isOpen, onClose, data }) => {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
+        <div className="fixed inset-0 flex items-center justify-center z-50">  
+             
+
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -53,9 +57,9 @@ const RowModal: React.FC<ModalProps> = ({ isOpen, onClose, data }) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="relative bg-white rounded-xl shadow-2xl w-11/12 max-w-2xl mx-auto p-6 max-h-[90vh] overflow-y-auto"
-          >
-            <div className="sticky top-0 bg-white pb-4 border-b border-gray-100">
+            className="relative bg-white rounded-xl shadow-2xl w-11/12 max-w-4xl mx-auto  max-h-[90vh] overflow-y-auto"
+          > <FileInput id={data._id} />
+            {/* <div className="sticky top-0 bg-white pb-4 border-b border-gray-100">
               <div className="flex justify-between items-center">
                 <h3 className="text-xl font-bold text-[#6FBDF5]">
                   جزئیات اطلاعات
@@ -81,7 +85,7 @@ const RowModal: React.FC<ModalProps> = ({ isOpen, onClose, data }) => {
                   <span className="text-gray-900">{value}</span>
                 </div>
               ))}
-            </div>
+            </div> */}
           </motion.div>
         </div>
       )}
@@ -125,7 +129,7 @@ const sortData = (
   });
 };
 
-const DynamicTable: React.FC<DynamicTableProps> = ({
+const CustomerTbale: React.FC<DynamicTableProps> = ({
   columns,
   data,
   loading = false,
@@ -139,6 +143,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
     key: string;
     direction: "asc" | "desc";
   } | null>(null);
+  console.log(data);
 
   const handleRowClick = (row: TableData) => {
     setSelectedRow(row);
@@ -283,4 +288,4 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
   );
 };
 
-export default DynamicTable;
+export default CustomerTbale;

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import DynamicTable from "@/components/global/tables";
+import CustomerTbale from "@/components/global/customerTable";
 
 export const Costumers = () => {
   const [activeTab, setActiveTab] = useState("list");
@@ -135,7 +136,7 @@ export const Costumers = () => {
           </form>
         );
       case "list":
-        return <DynamicTable columns={columns} data={customers} />;
+        return <CustomerTbale columns={columns} data={customers} />;
       default:
         return null;
     }

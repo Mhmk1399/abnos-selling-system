@@ -10,7 +10,6 @@ import { AiOutlineAim } from "react-icons/ai";
 import DefaultDashboard from "./default-saler";
 import { Costumers } from "./costumers";
 import SalerTargets from "./targets";
-import { AddCall } from "@/components/addCall";
 import { CallsList } from "@/components/callsList";
 
 const SalerForm = () => {
@@ -55,7 +54,7 @@ const SalerForm = () => {
       case "settings":
         return null;
         case "transactions":
-          return <AddCall />;
+            return null;
           case "reports":
             return <CallsList />;
     
