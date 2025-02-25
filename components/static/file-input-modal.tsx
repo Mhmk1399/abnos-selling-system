@@ -18,7 +18,7 @@ const FileInputModal = ({ onClose }: FileInputModalProps) => {
         animate={{ scale: 1, opacity: 1 }}
         className="w-full max-w-4xl bg-white rounded-2xl shadow-xl overflow-hidden"
       >
-        <FileInput />
+        <FileInput id=''/>
         <div className="p-4 border-t">
           <button
             onClick={onClose}

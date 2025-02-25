@@ -1,14 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { BsTelephone } from 'react-icons/bs';
-
-export const AddCall = () => {
-    const [customers, setCustomers] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
+interface AddCallProps {
+    customer: string;
+  }
+  
+  export const AddCall = ({ customer }: AddCallProps) => {
+    // const [customers, setCustomers] = useState([]);
+    // const [searchTerm, setSearchTerm] = useState('');
+    const id=localStorage.getItem('user');
+console.log(customer,"customer");
+console.log(id,"user");
 
     const [formData, setFormData] = useState({
-        user: '',
-        customer: '',
+        user: id,
+        customer: customer,
         comment: '',
         type: 'priceAsker',
         followUp: [{
@@ -17,27 +23,31 @@ export const AddCall = () => {
             time: ''
         }]
     });
-    const filteredCustomers = customers.filter((customer: any) => {
-        return Object.values(customer).some(value =>
-            String(value).toLowerCase().includes(searchTerm.toLowerCase())
-        );
-    });
-    useEffect(() => {
-        fetchCustomer();
-        const userId = localStorage.getItem('user');
-        if (userId) {
-            setFormData(prev => ({ ...prev, user: userId }));
-        }
-    }, []);
+    // const filteredCustomers = customers.filter((customer: any) => {
+    //     return Object.values(customer).some(value =>
+    //         String(value).toLowerCase().includes(searchTerm.toLowerCase())
+    //     );
+    // });
+    // useEffect(() => {
+    //     fetchCustomer();
+    //     const userId = localStorage.getItem('user');
+    //     if (userId) {
+    //         setFormData(prev => ({ ...prev, user: userId 
+                
+    //         }));
+    //     }
+    // }, []);
 
-    const fetchCustomer = async () => {
-        const response = await fetch('/api/customer');
-        const data = await response.json();
-        setCustomers(data.customer);
-    };
+    // const fetchCustomer = async () => {
+    //     const response = await fetch('/api/customer');
+    //     const data = await response.json();
+    //     setCustomers(data.customer);
+    // };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        console.log(formData);
+        
         try {
             const response = await fetch('/api/callLog', {
                 method: 'POST',
@@ -49,8 +59,8 @@ export const AddCall = () => {
             if (response.ok) {
                 // Reset form or show success message
                 setFormData({
-                    user: formData.user,
-                    customer: '',
+                    user: id,
+                    customer: customer,
                     comment: '',
                     type: 'priceAsker',
                     followUp: [{
@@ -69,10 +79,10 @@ export const AddCall = () => {
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="p-6 min-h-screen mr-16"
+            className=""
             dir="rtl"
         >
-            <div className="max-w-2xl mx-auto bg-white rounded-2xl p-6 shadow-xl">
+            <div className="w-full mx-auto bg-white rounded-2xl p-6 shadow-xl">
                 <h2 className="text-2xl font-bold text-[#6FBDF5] mb-6">ثبت تماس جدید</h2>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
