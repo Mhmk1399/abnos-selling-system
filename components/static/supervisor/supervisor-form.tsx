@@ -14,6 +14,8 @@ import { AiOutlineAim, AiOutlineGift } from "react-icons/ai";
 import DefaultSupervisor from "./default-supervisor";
 import DefinitionTarget from "./definition-target";
 import DefinitionReward from "../definition-reward";
+import CustomersList from "./customers-list";
+import SalersList from "./salers-list";
 
 const SupervisorForm = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,12 +25,12 @@ const SupervisorForm = () => {
   const menuItems = [
     { id: "dashboard", icon: <MdDashboard size={23} />, title: "داشبورد" },
     {
-      id: "products",
+      id: "salers",
       icon: <FaUserFriends size={23} />,
       title: "لیست فروشندگان",
     },
-    { id: "orders", icon: <BsCartCheck size={23} />, title: "لیست مشتریان" },
-    { id: "customers", icon: <BsListCheck size={23} />, title: "لسیت سفارشات" },
+    { id: "orders", icon: <BsCartCheck size={23} />, title: "لیست سفارشات" },
+    { id: "customers", icon: <BsListCheck size={23} />, title: "لسیت مشتریان" },
     {
       id: "transactions",
       icon: <BsTelephone size={23} />,
@@ -47,10 +49,10 @@ const SupervisorForm = () => {
     switch (activeComponent) {
       case "dashboard":
         return <DefaultSupervisor />;
-      case "sales":
-        return null;
-      case "analytics":
-        return null;
+      case "customers":
+        return <CustomersList />;
+      case "salers":
+        return <SalersList />;
       case "target":
         return <DefinitionTarget />;
       case "reward":
@@ -99,7 +101,7 @@ const SupervisorForm = () => {
               onClick={() => setActiveComponent(item.id)}
               transition={{ duration: 0.2 }}
             >
-              <div>{item.icon}</div>
+              <div className="peer">{item.icon}</div>
               <motion.span
                 animate={isOpen ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
                 className="mr-4 whitespace-nowrap"
@@ -109,7 +111,7 @@ const SupervisorForm = () => {
 
               {/* Custom Tooltip */}
               {!isOpen && (
-                <div className="absolute right-[60px] hidden md:block bg-[#6FBDF5] px-3 py-2 rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 whitespace-nowrap z-50 before:content-[''] before:absolute before:top-[50%] before:right-[-5px] before:translate-y-[-50%] before:border-[6px] before:border-transparent before:border-l-[#6FBDF5]">
+                <div className="absolute right-[60px] hidden md:block bg-[#6FBDF5] px-3 py-2 rounded-md opacity-0 invisible peer-hover:opacity-100 peer-hover:visible transition-all duration-300 whitespace-nowrap z-50 before:content-[''] before:absolute before:top-[50%] before:right-[-5px] before:translate-y-[-50%] before:border-[6px] before:border-transparent before:border-l-[#6FBDF5]">
                   {item.title}
                 </div>
               )}

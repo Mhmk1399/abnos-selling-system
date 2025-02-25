@@ -116,7 +116,7 @@ const DynamicLineChart: React.FC<DynamicLineChartProps> = ({
   };
 
   return (
-    <div className="bg-white p-4 sm:p-6 md:p-8 rounded-2xl shadow-lg">
+    <div className="p-4 sm:p-6 md:p-8 rounded-2xl shadow-lg">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <h2 className="text-lg sm:text-xl font-bold text-gray-800">{title}</h2>
         <div className="w-full sm:w-auto">

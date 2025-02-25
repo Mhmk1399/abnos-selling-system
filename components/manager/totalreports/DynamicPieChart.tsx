@@ -38,9 +38,9 @@ const DynamicPieChart: React.FC<DynamicPieChartProps> = ({ title, data }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-white p-6 rounded-2xl shadow-lg"
+      className=" p-2 rounded-2xl shadow-lg "
     >
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col md:flex-row justify-between gap-3 items-center mb-6">
         <h2 className="text-xl font-bold text-gray-800">{title}</h2>
         
         <select 
@@ -56,7 +56,7 @@ const DynamicPieChart: React.FC<DynamicPieChartProps> = ({ title, data }) => {
         </select>
       </div>
 
-      <div className="grid grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="h-[300px] relative">
           <Pie 
             data={chartData} 
@@ -79,7 +79,7 @@ const DynamicPieChart: React.FC<DynamicPieChartProps> = ({ title, data }) => {
           />
         </div>
 
-        <div className="overflow-auto">
+        <div className="overflow-auto hidden md:block">
           <table className="w-full text-right">
             <thead className="bg-gray-50">
               <tr>

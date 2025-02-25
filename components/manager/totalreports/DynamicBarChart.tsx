@@ -64,7 +64,7 @@ const DynamicBarChart: React.FC<DynamicBarChartProps> = ({
       {
         label: "هدف",
         data: Array(data.length).fill(target),
-        type: "line" as const,
+        type: "line",
         borderColor: "#ef4444",
         borderWidth: 2,
         borderDash: [5, 5],
@@ -143,7 +143,7 @@ const DynamicBarChart: React.FC<DynamicBarChartProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-white p-6 rounded-2xl shadow-lg"
+      className=" p-6 rounded-2xl shadow-lg"
     >
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-bold text-gray-800">{title}</h2>

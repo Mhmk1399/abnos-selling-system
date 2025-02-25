@@ -1,50 +1,20 @@
 "use client";
 import CallDistributionDashboard from "@/components/manager/totalreports/MainComponent";
-import DynamicTreeChart from "@/components/manager/calls/DynamicTreeChart";
+import MainCalls from "./calls/MainCalls";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import MainCostumer from "./costumers/MainCostumer";
+import RoleChanger from "./role-changer";
+import MainSales from "./sales/main-sales";
 
 const navItems = [
   { id: "main", title: "صفحه ی اصلی" },
   { id: "calls", title: "تماس‌ها" },
   { id: "sales", title: "فروش" },
-  { id: "orders", title: "سفارشات" },
   { id: "customers", title: "مشتریان" },
+  { id: "users", title: "لیست کاربران" },
 ];
-const sampleData = {
-  totalCalls: 150,
-  salesData: [
-    {
-      name: "Saler 1",
-      calls: 45,
-      statuses: [
-        { status: "Completed", count: 20 },
-        { status: "Pending", count: 15 },
-        { status: "Failed", count: 10 },
-      ],
-    },
-    {
-      name: "Saler 2",
-      calls: 45,
-      statuses: [
-        { status: "Completed", count: 10 },
-        { status: "Pending", count: 35 },
-        { status: "Failed", count: 13 },
-      ],
-    },
-    {
-      name: "Saler 3",
-      calls: 335,
-      statuses: [
-        { status: "Completed", count: 30 },
-        { status: "Pending", count: 35 },
-        { status: "Failed", count: 14 },
-      ],
-    },
-    // Add more salers as needed
-  ],
-};
+
 export default function Manager() {
   const [activeTab, setActiveTab] = useState("main");
 
@@ -53,36 +23,46 @@ export default function Manager() {
       case "main":
         return <CallDistributionDashboard />;
       case "calls":
-        return <div>Calls Component</div>; // Replace with your Calls component
-      case "sales":
-        return <div>Sales Component</div>; // Replace with your Sales component
-      case "orders":
         return (
-          <DynamicTreeChart
-            totalCalls={sampleData.totalCalls}
-            salesData={sampleData.salesData}
-          />
-        ); // Replace with your Orders component
+          <div className="max-w-7xl flex justify-center mx-auto">
+            <MainCalls />
+          </div>
+        ); // Replace with your Calls component
+      case "sales":
+        return <MainSales />; // Replace with your Sales component
+      case "users":
+        return <RoleChanger />; // Replace with your Orders component
       case "customers":
-        return <MainCostumer />; // Replace with your Customers component
+        return (
+          <div className="max-w-7xl flex justify-center mx-auto">
+            <MainCostumer />
+          </div>
+        );
       default:
         return <CallDistributionDashboard />;
     }
   };
-
   return (
     <div
-      className="min-h-screen bg-gradient-to-r from-blue-100 to-blue-50 p-8"
+      className="min-h-screen bg-gradient-to-r from-blue-100 to-blue-50 p-3"
       dir="rtl"
     >
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">داشبورد مدیریت</h1>
+      <h1 className="text-2xl text-center font-bold text-gray-800 mb-6">
+        داشبورد مدیریت
+      </h1>
+      <button
+        onClick={() => (window.location.href = "/")}
+        className="absolute left-4 top-[100px] py-1 px-4 inline-block text-white font-bold rounded-md bg-yellow-500 hover:text-red-50 transition-colors"
+      >
+        ← بازگشت به صفحه اصلی
+      </button>
       <div className="rounded-lg p-2 shadow-sm">
-        <nav className="flex items-center gap-8">
+        <nav className="flex items-center justify-center gap-2 md:gap-8">
           {navItems.map((item) => (
             <div key={item.id} className="relative">
               <motion.button
                 onClick={() => setActiveTab(item.id)}
-                className={`relative px-2 py-3 text-sm font-medium transition-colors
+                className={`relative px-2 md:px-6 py-3 text-nowrap text-xs rounded-md hover:bg-white/40 md:text-sm font-medium transition-colors
                   ${
                     activeTab === item.id
                       ? "text-blue-600"

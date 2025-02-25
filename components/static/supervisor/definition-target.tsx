@@ -50,6 +50,8 @@ const DefinitionTarget = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [postedTargets, setPostedTargets] = useState<DisplayTarget[]>([]);
+  const [salersLoading, setSalersLoading] = useState(true);
+  const [targetsLoading, setTargetsLoading] = useState(true);
 
   const [formData, setFormData] = useState<TargetFormData>({
     saler: [],
@@ -63,16 +65,21 @@ const DefinitionTarget = () => {
     supervisor: localStorage.getItem("user") || "",
   });
   const fetchPostedTargets = async () => {
+    setTargetsLoading(true);
+
     try {
       const response = await fetch("/api/targets", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+          id: localStorage.getItem("user") || "",
         },
       });
       const data = await response.json();
       setPostedTargets(data.target || []);
     } catch (error) {
       console.error("Error fetching targets:", error);
+    } finally {
+      setTargetsLoading(false);
     }
   };
 
@@ -92,6 +99,7 @@ const DefinitionTarget = () => {
           Authorization: `Bearer ${token}`,
           id: userId || "",
         };
+        setSalersLoading(true);
 
         // Updated API endpoints to match your backend routes
         const [salersRes, customersRes] = await Promise.all([
@@ -118,10 +126,9 @@ const DefinitionTarget = () => {
 
         // Set state with validated data
         setSalers(salersData?.users || []);
-        console.log(salersData);
+        setSalersLoading(false);
 
         setCustomers(customersData?.customer || []);
-        console.log(customersData);
 
         setProducts(["Product 1", "Product 2"]); // Temporary static products until API is ready
       } catch (error) {
@@ -168,6 +175,7 @@ const DefinitionTarget = () => {
 
         setTimeout(() => setSuccess(false), 3000);
       }
+      fetchPostedTargets()
     } catch (error) {
       console.error("Error submitting target:", error);
     } finally {
@@ -204,29 +212,35 @@ const DefinitionTarget = () => {
                 <span className="text-gray-700 font-bold">انتخاب همه</span>
               </label>
 
-              {salers.map((saler) => (
-                <label
-                  key={saler._id}
-                  className="flex items-center gap-2 cursor-pointer"
-                >
-                  <input
-                    type="checkbox"
-                    value={saler._id}
-                    checked={formData.saler.includes(saler._id)}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      setFormData((prev) => ({
-                        ...prev,
-                        saler: e.target.checked
-                          ? [...prev.saler, value]
-                          : prev.saler.filter((id) => id !== value),
-                      }));
-                    }}
-                    className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
-                  />
-                  <span className="text-gray-700">{saler.name}</span>
-                </label>
-              ))}
+              {salersLoading ? (
+                <div className="flex items-center justify-center p-4">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                </div>
+              ) : (
+                salers.map((saler) => (
+                  <label
+                    key={saler._id}
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      value={saler._id}
+                      checked={formData.saler.includes(saler._id)}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setFormData((prev) => ({
+                          ...prev,
+                          saler: e.target.checked
+                            ? [...prev.saler, value]
+                            : prev.saler.filter((id) => id !== value),
+                        }));
+                      }}
+                      className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                    />
+                    <span className="text-gray-700">{saler.name}</span>
+                  </label>
+                ))
+              )}
             </div>
 
             <div>
@@ -385,81 +399,86 @@ const DefinitionTarget = () => {
           <h3 className="text-xl font-bold text-gray-800 mb-6">
             اهداف ثبت شده
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {postedTargets.map((target) => (
-              <motion.div
-                key={target._id}
-                whileHover={{ scale: 1.02 }}
-                className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-200"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-3 bg-blue-100 rounded-full">
-                    <FiTarget className="text-blue-600 w-6 h-6" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-800">
-                      {target.customer.name}
-                    </h4>
-                    <p className="text-sm text-gray-500">
-                      {target.customer.company}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center mb-2 gap-2 text-gray-600">
-                  <FiUser className="w-4 h-4" />
-                  <div className="flex flex-wrap gap-2">
-                    {salers
-                      .filter((s) => target.saler.includes(s._id))
-                      .map((saler, index) => (
-                        <span
-                          key={index}
-                          className="px-2 py-1 text-xs bg-green-50 text-green-600 rounded-full"
-                        >
-                          {saler.name}
-                        </span>
-                      ))}
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2 text-gray-600">
-                    <FiCalendar className="w-4 h-4" />
-                    <span className="text-sm">
-                      {target.startDate}
-                      تا
-                      {target.endDate}{" "}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-2 text-gray-600">
-                    <FiDollarSign className="w-4 h-4" />
-                    <span className="text-sm">
-                      {Number(target.price).toLocaleString()} تومان
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-2 text-gray-600">
-                    <FiMapPin className="w-4 h-4" />
-                    <span className="text-sm">{target.city}</span>
-                  </div>
-
-                  <div className="flex items-center gap-2 text-gray-600">
-                    <FiPackage className="w-4 h-4" />
-                    <div className="flex flex-wrap gap-2">
-                      {target.product.map((prod, index) => (
-                        <span
-                          key={index}
-                          className="px-2 py-1 text-xs bg-blue-50 text-blue-600 rounded-full"
-                        >
-                          {prod}
-                        </span>
-                      ))}
+          {targetsLoading ? (
+            <div className="flex items-center justify-center p-8">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {postedTargets.map((target) => (
+                <motion.div
+                  key={target._id}
+                  className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-200"
+                >
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-3 bg-blue-100 rounded-full">
+                      <FiTarget className="text-blue-600 w-6 h-6" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800">
+                        {target.customer.name}
+                      </h4>
+                      <p className="text-sm text-gray-500">
+                        {target.customer.company}
+                      </p>
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                  <div className="flex items-center mb-2 gap-2 text-gray-600">
+                    <FiUser className="w-4 h-4" />
+                    <div className="flex flex-wrap gap-2">
+                      {salers
+                        .filter((s) => target.saler.includes(s._id))
+                        .map((saler, index) => (
+                          <span
+                            key={index}
+                            className="px-2 py-1 text-xs bg-green-50 text-green-600 rounded-full"
+                          >
+                            {saler.name}
+                          </span>
+                        ))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <FiCalendar className="w-4 h-4" />
+                      <span className="text-sm">
+                        {target.startDate}
+                        تا
+                        {target.endDate}{" "}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <FiDollarSign className="w-4 h-4" />
+                      <span className="text-sm">
+                        {Number(target.price).toLocaleString()} تومان
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <FiMapPin className="w-4 h-4" />
+                      <span className="text-sm">{target.city}</span>
+                    </div>
+
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <FiPackage className="w-4 h-4" />
+                      <div className="flex flex-wrap gap-2">
+                        {target.product.map((prod, index) => (
+                          <span
+                            key={index}
+                            className="px-2 py-1 text-xs bg-blue-50 text-blue-600 rounded-full"
+                          >
+                            {prod}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </motion.div>
       </div>
     </motion.div>
