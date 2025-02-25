@@ -1,6 +1,6 @@
 "use client";
 import CallDistributionDashboard from "@/components/manager/totalreports/MainComponent";
-import DynamicTreeChart from "@/components/manager/calls/DynamicTreeChart";
+import MainCalls from "./calls/MainCalls";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import MainCostumer from "./costumers/MainCostumer";
@@ -12,39 +12,7 @@ const navItems = [
   { id: "orders", title: "سفارشات" },
   { id: "customers", title: "مشتریان" },
 ];
-const sampleData = {
-  totalCalls: 150,
-  salesData: [
-    {
-      name: "Saler 1",
-      calls: 45,
-      statuses: [
-        { status: "Completed", count: 20 },
-        { status: "Pending", count: 15 },
-        { status: "Failed", count: 10 },
-      ],
-    },
-    {
-      name: "Saler 2",
-      calls: 45,
-      statuses: [
-        { status: "Completed", count: 10 },
-        { status: "Pending", count: 35 },
-        { status: "Failed", count: 13 },
-      ],
-    },
-    {
-      name: "Saler 3",
-      calls: 335,
-      statuses: [
-        { status: "Completed", count: 30 },
-        { status: "Pending", count: 35 },
-        { status: "Failed", count: 14 },
-      ],
-    },
-    // Add more salers as needed
-  ],
-};
+
 export default function Manager() {
   const [activeTab, setActiveTab] = useState("main");
 
@@ -53,18 +21,13 @@ export default function Manager() {
       case "main":
         return <CallDistributionDashboard />;
       case "calls":
-        return <div>Calls Component</div>; // Replace with your Calls component
+        return <div className="max-w-7xl flex justify-center mx-auto"><MainCalls /></div>; // Replace with your Calls component
       case "sales":
         return <div>Sales Component</div>; // Replace with your Sales component
       case "orders":
-        return (
-          <DynamicTreeChart
-            totalCalls={sampleData.totalCalls}
-            salesData={sampleData.salesData}
-          />
-        ); // Replace with your Orders component
+        return "sdsd"
       case "customers":
-        return <MainCostumer />; // Replace with your Customers component
+        return  <div className="max-w-7xl flex justify-center mx-auto"><MainCostumer /></div>;
       default:
         return <CallDistributionDashboard />;
     }

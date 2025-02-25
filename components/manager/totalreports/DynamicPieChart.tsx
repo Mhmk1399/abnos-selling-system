@@ -38,7 +38,7 @@ const DynamicPieChart: React.FC<DynamicPieChartProps> = ({ title, data }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-white p-6 rounded-2xl shadow-lg"
+      className=" p-6 rounded-2xl "
     >
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-bold text-gray-800">{title}</h2>
