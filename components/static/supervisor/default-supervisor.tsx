@@ -260,7 +260,7 @@ const DefaultSupervisor: React.FC = () => {
       </button>
 
       {/* Chart Section */}
-      <div className="mt-32  mb-8">
+      <div className="mt-32 mb-8">
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -277,13 +277,6 @@ const DefaultSupervisor: React.FC = () => {
               onChange={(selected) => setSelectedSalers(selected)}
             />
 
-            {/* <Select
-              options={dateRangeOptions}
-              placeholder="بازه زمانی"
-              className="text-right text-black"
-              styles={customSelectStyles}
-              onChange={(selected) => setSelectedDateRange(selected)}
-            /> */}
 
             <DatePicker
               calendar={persian}
@@ -319,7 +312,7 @@ const DefaultSupervisor: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
-              className="w-full h-[400px] sm:h-[600px] md:h-[500px] lg:w-1/2 lg:h-[400px] mx-auto md:mx-0"
+              className="w-full h-[400px] sm:h-[600px] md:h-[500px] lg:h-[400px] mx-auto md:mx-0"
             >
               <Bar
                 data={filteredData}
