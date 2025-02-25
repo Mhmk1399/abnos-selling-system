@@ -14,6 +14,8 @@ import { AiOutlineAim, AiOutlineGift } from "react-icons/ai";
 import DefaultSupervisor from "./default-supervisor";
 import DefinitionTarget from "./definition-target";
 import DefinitionReward from "../definition-reward";
+import CustomersList from "./customers-list";
+import SalersList from "./salers-list";
 
 const SupervisorForm = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,12 +25,12 @@ const SupervisorForm = () => {
   const menuItems = [
     { id: "dashboard", icon: <MdDashboard size={23} />, title: "داشبورد" },
     {
-      id: "products",
+      id: "salers",
       icon: <FaUserFriends size={23} />,
       title: "لیست فروشندگان",
     },
-    { id: "orders", icon: <BsCartCheck size={23} />, title: "لیست مشتریان" },
-    { id: "customers", icon: <BsListCheck size={23} />, title: "لسیت سفارشات" },
+    { id: "orders", icon: <BsCartCheck size={23} />, title: "لیست سفارشات" },
+    { id: "customers", icon: <BsListCheck size={23} />, title: "لسیت مشتریان" },
     {
       id: "transactions",
       icon: <BsTelephone size={23} />,
@@ -47,10 +49,10 @@ const SupervisorForm = () => {
     switch (activeComponent) {
       case "dashboard":
         return <DefaultSupervisor />;
-      case "sales":
-        return null;
-      case "analytics":
-        return null;
+      case "customers":
+        return <CustomersList />;
+      case "salers":
+        return <SalersList />;
       case "target":
         return <DefinitionTarget />;
       case "reward":

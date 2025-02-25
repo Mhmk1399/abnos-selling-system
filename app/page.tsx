@@ -1,5 +1,6 @@
 "use client";
 import DynamicTable from "@/components/global/tables";
+import RoleChanger from "@/components/manager/role-changer";
 import FileInput from "@/components/static/file-input";
 import SalerForm from "@/components/static/saler/saler-form";
 import SupervisorForm from "@/components/static/supervisor/supervisor-form";
@@ -81,10 +82,12 @@ export default function Home() {
   // ];
   return (
     <div className="">
-      <SalerForm />
-      {/* <FileInput /> */} 
+      {/* <SalerForm /> */}
+      {/* <FileInput /> */}
       {/* <SupervisorForm /> */}
+      <RoleChanger />
       {/* <DynamicTable
+
         columns={columns}
         data={sampleData}
         onSort={(key, direction) => console.log("Sort:", key, direction)}

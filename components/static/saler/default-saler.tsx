@@ -2,8 +2,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import moment from "moment-jalaali";
-import { Tab } from "@headlessui/react";
-import { BiSearch } from "react-icons/bi";
 import { FaUserCircle } from "react-icons/fa";
 
 import {
@@ -16,7 +14,6 @@ import {
 import { AiFillStar, AiFillTrophy, AiOutlineTrophy } from "react-icons/ai";
 import FileInputModal from "../file-input-modal";
 
-  import FileInput from "../file-input";
 interface Target {
   _id: string;
   saler: string[];
@@ -117,9 +114,8 @@ const DefaultDashboard = () => {
   const [username, setUsername] = useState("کاربر گرامی");
   const currentDate = moment().format("jYYYY/jMM/jDD");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [searchName, setSearchName] = useState("");
   const [customers, setCustomers] = useState([]);
-  const [selectedCustomer, setSelectedCustomer] = useState('');
+  const [selectedCustomer, setSelectedCustomer] = useState("");
   const overlayRef = useRef(null);
   const [showFileInput, setShowFileInput] = useState(false);
   const [formData, setFormData] = useState({
@@ -129,11 +125,7 @@ const DefaultDashboard = () => {
   });
   const [currentTarget, setCurrentTarget] = useState<Target[]>([]);
 
-  const handleOverlayClick = (e: React.MouseEvent) => {
-    if (e.target === overlayRef.current) {
-      setIsModalOpen(false);
-    }
-  };
+ 
   const handleCustomerSelection = async (isNewCustomer: boolean) => {
     if (isNewCustomer) {
       try {
@@ -185,15 +177,14 @@ const DefaultDashboard = () => {
     });
 
     if (response.ok) {
-    const  data = await response.json();
-    console.log("Customer created:", data);
-    
+      const data = await response.json();
+      console.log("Customer created:", data);
+
       setSelectedCustomer(data.customer._id);
       setFormData(data.customer);
     }
-   
   };
-  
+
   const fetchTargets = async () => {
     try {
       const response = await fetch("/api/targets/id", {
@@ -220,7 +211,6 @@ const DefaultDashboard = () => {
 
   // Add these columns for the table
 
-
   const rewards = [
     {
       title: "فروش برتر هفته",
@@ -238,7 +228,7 @@ const DefaultDashboard = () => {
       icon: <AiFillStar size={24} className="text-blue-500" />,
     },
   ];
-  
+
   return (
     <>
       <motion.div
@@ -308,10 +298,10 @@ const DefaultDashboard = () => {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => {setIsModalOpen(true)
-              handleCustomerSelection(false)
+            onClick={() => {
+              setIsModalOpen(true);
+              handleCustomerSelection(false);
             }}
-
             className="flex items-center justify-center gap-2 bg-[#6FBDF5] text-white py-4 px-6 rounded-lg shadow-lg hover:bg-[#5CA8E0] transition-colors"
           >
             <BsTelephone size={20} />
@@ -437,7 +427,7 @@ const DefaultDashboard = () => {
                 </Tab.Panel>
               </Tab.Panels> */}
 
-              {/* <div className="mt-6 flex justify-start gap-2">
+      {/* <div className="mt-6 flex justify-start gap-2">
                 <button
                   // whileHover={{ scale: 1.02 }}
                   // whileTap={{ scale: 0.98 }}
@@ -454,16 +444,14 @@ const DefaultDashboard = () => {
                   ثبت تماس
                 </motion.button>
               </div> */}
-            {/* </Tab.Group>
+      {/* </Tab.Group>
               </Tab.Panels>
             </Tab.Group>
           </motion.div>
         </motion.div>
       )} */}
       {showFileInput && (
-          <FileInputModal
-            onClose={() => setShowFileInput(false)}
-            />
+        <FileInputModal onClose={() => setShowFileInput(false)} />
       )}
     </>
   );
